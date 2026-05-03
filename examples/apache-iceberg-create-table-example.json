@@ -1,0 +1,60 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://catalog.example.com/v1/namespaces/marketing/tables",
+    "headers": {
+      "Authorization": "Bearer {ACCESS_TOKEN}",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "name": "customer_events",
+      "location": "s3://my-data-lake/warehouse/marketing/customer_events",
+      "schema": {
+        "schema-id": 0,
+        "fields": [
+          {"id": 1, "name": "event_id", "type": "string", "required": true, "doc": "Unique event identifier"},
+          {"id": 2, "name": "customer_id", "type": "long", "required": true, "doc": "Customer identifier"},
+          {"id": 3, "name": "event_type", "type": "string", "required": true, "doc": "Type of customer event"},
+          {"id": 4, "name": "event_timestamp", "type": "timestamptz", "required": true, "doc": "Event time with timezone"},
+          {"id": 5, "name": "properties", "type": {"type": "map", "key-id": 6, "key": "string", "value-id": 7, "value": "string"}, "required": false, "doc": "Additional event properties"}
+        ]
+      },
+      "partition-spec": {
+        "spec-id": 0,
+        "fields": [
+          {"source-id": 4, "field-id": 1000, "transform": "day", "name": "event_day"}
+        ]
+      },
+      "properties": {
+        "write.format.default": "parquet",
+        "write.parquet.compression-codec": "snappy"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "metadata-location": "s3://my-data-lake/warehouse/marketing/customer_events/metadata/v1.metadata.json",
+      "metadata": {
+        "format-version": 2,
+        "table-uuid": "9c12d441-03fe-4693-9a96-374b1bfb2831",
+        "location": "s3://my-data-lake/warehouse/marketing/customer_events",
+        "last-updated-ms": 1746259200000,
+        "current-schema-id": 0,
+        "schemas": [
+          {
+            "schema-id": 0,
+            "fields": [
+              {"id": 1, "name": "event_id", "type": "string", "required": true},
+              {"id": 2, "name": "customer_id", "type": "long", "required": true},
+              {"id": 3, "name": "event_type", "type": "string", "required": true},
+              {"id": 4, "name": "event_timestamp", "type": "timestamptz", "required": true}
+            ]
+          }
+        ],
+        "default-spec-id": 0,
+        "current-snapshot-id": -1
+      }
+    }
+  }
+}

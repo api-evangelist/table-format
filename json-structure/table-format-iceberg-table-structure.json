@@ -1,0 +1,80 @@
+{
+  "title": "Apache Iceberg Table Metadata Structure",
+  "description": "Field documentation for Apache Iceberg table metadata objects",
+  "type": "object",
+  "fields": [
+    {
+      "name": "format-version",
+      "type": "integer",
+      "description": "Iceberg spec version: 1 (original) or 2 (adds row-level deletes)",
+      "required": true,
+      "values": [1, 2]
+    },
+    {
+      "name": "table-uuid",
+      "type": "string (UUID)",
+      "description": "Globally unique table identifier, assigned at creation",
+      "required": true
+    },
+    {
+      "name": "location",
+      "type": "string (URI)",
+      "description": "Base storage path for all table data and metadata files",
+      "required": true,
+      "example": "s3://my-bucket/warehouse/my_table"
+    },
+    {
+      "name": "schemas",
+      "type": "array<Schema>",
+      "description": "All schema versions, supporting schema evolution",
+      "required": true
+    },
+    {
+      "name": "current-schema-id",
+      "type": "integer",
+      "description": "Points to the active schema in the schemas array",
+      "required": true
+    },
+    {
+      "name": "partition-specs",
+      "type": "array<PartitionSpec>",
+      "description": "Partition strategies for organizing data files",
+      "required": true
+    },
+    {
+      "name": "snapshots",
+      "type": "array<Snapshot>",
+      "description": "Immutable table states enabling time travel queries",
+      "required": false
+    },
+    {
+      "name": "current-snapshot-id",
+      "type": "integer (int64)",
+      "description": "The active snapshot representing the current table state",
+      "required": false
+    },
+    {
+      "name": "sort-orders",
+      "type": "array<SortOrder>",
+      "description": "Defines data sorting for write optimization",
+      "required": false
+    },
+    {
+      "name": "properties",
+      "type": "map<string, string>",
+      "description": "User-defined and system table properties",
+      "required": false,
+      "commonKeys": [
+        "write.format.default",
+        "write.parquet.compression-codec",
+        "read.parquet.vectorization.enabled"
+      ]
+    },
+    {
+      "name": "refs",
+      "type": "map<string, SnapshotRef>",
+      "description": "Named references (branches and tags) pointing to snapshots",
+      "required": false
+    }
+  ]
+}

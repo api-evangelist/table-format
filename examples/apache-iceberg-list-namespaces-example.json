@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://catalog.example.com/v1/namespaces",
+    "headers": {
+      "Authorization": "Bearer {ACCESS_TOKEN}",
+      "Content-Type": "application/json"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "namespaces": [
+        ["marketing"],
+        ["sales"],
+        ["data_engineering", "raw"],
+        ["data_engineering", "curated"]
+      ]
+    }
+  }
+}

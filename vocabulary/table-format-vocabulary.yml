@@ -1,0 +1,225 @@
+name: Table Format Vocabulary
+description: >-
+  Domain vocabulary and taxonomy for open table formats used in data lakehouses,
+  covering Apache Iceberg, Delta Lake, Apache Hudi, and related catalog and
+  storage concepts.
+created: '2026-05-03'
+modified: '2026-05-03'
+tags:
+  - Data Lakehouse
+  - Open Table Format
+  - Apache Iceberg
+  - Delta Lake
+  - Apache Hudi
+
+terms:
+  - term: Open Table Format
+    definition: >-
+      A specification that defines how tabular data is organized, tracked, and
+      accessed in object storage. Open table formats add ACID transactions,
+      schema evolution, time travel, and efficient query planning to data lakes
+      without requiring a dedicated storage engine. The three dominant formats
+      are Apache Iceberg, Delta Lake, and Apache Hudi.
+    category: Core Concept
+    tags:
+      - Data Lakehouse
+      - ACID
+
+  - term: Apache Iceberg
+    definition: >-
+      An open table format specification originally developed at Netflix, now
+      an Apache Software Foundation top-level project. Iceberg uses a
+      hierarchical tree of metadata files (metadata.json → manifests → data files)
+      for snapshot isolation, schema evolution, partition evolution, and
+      hidden partitioning. It has become the dominant open table format.
+    category: Table Format
+    related:
+      - Delta Lake
+      - Apache Hudi
+    tags:
+      - Apache Iceberg
+
+  - term: Delta Lake
+    definition: >-
+      An open-source storage layer developed by Databricks that adds ACID
+      transactions to data lakes. Delta Lake maintains a delta log (JSON-based
+      transaction log) recording all changes. It is deeply integrated with Apache
+      Spark and supports both batch and streaming workloads.
+    category: Table Format
+    related:
+      - Apache Iceberg
+      - Apache Hudi
+    tags:
+      - Delta Lake
+      - Databricks
+
+  - term: Apache Hudi
+    definition: >-
+      An open table format (Hadoop Upserts Deletes and Incrementals) optimized
+      for record-level upserts and deletes. Hudi supports two table types:
+      Copy-on-Write (COW) for read-optimized workloads and Merge-on-Read (MOR)
+      for write-optimized workloads. Popular for CDC-based data pipelines.
+    category: Table Format
+    related:
+      - Apache Iceberg
+      - Delta Lake
+    tags:
+      - Apache Hudi
+      - CDC
+
+  - term: Snapshot
+    definition: >-
+      An immutable, point-in-time view of an Iceberg table's state. Each write
+      operation creates a new snapshot. Snapshots enable time travel queries and
+      concurrent reads without locking. Each snapshot references a manifest list
+      file that points to all data files in that version of the table.
+    category: Apache Iceberg
+    tags:
+      - Time Travel
+      - ACID
+
+  - term: Manifest File
+    definition: >-
+      An Avro file that tracks a subset of data files in an Iceberg table snapshot.
+      Manifests record file-level statistics (row counts, min/max values per
+      column) enabling partition pruning and predicate pushdown without reading
+      data files.
+    category: Apache Iceberg
+    tags:
+      - Apache Iceberg
+      - Metadata
+
+  - term: Manifest List
+    definition: >-
+      An Avro file referenced by each Iceberg snapshot that lists all manifest
+      files for that snapshot. The manifest list enables efficient snapshot
+      management and incremental metadata operations.
+    category: Apache Iceberg
+    tags:
+      - Apache Iceberg
+      - Metadata
+
+  - term: Catalog
+    definition: >-
+      A service that tracks table locations, schema versions, and metadata file
+      locations. Catalogs provide the mapping from table name to metadata file.
+      Common Iceberg catalog implementations include Apache Polaris, Project
+      Nessie, AWS Glue, Hive Metastore, and JDBC catalogs.
+    category: Architecture
+    tags:
+      - Catalog
+      - Metadata
+
+  - term: REST Catalog
+    definition: >-
+      A standard HTTP/REST API specification for Iceberg catalog operations,
+      defined as an OpenAPI spec in the Apache Iceberg project. REST catalog
+      allows any catalog service (Polaris, Nessie, BigLake, Glue) to expose a
+      common interface, enabling catalog interoperability.
+    category: Apache Iceberg
+    tags:
+      - REST API
+      - Catalog
+      - Interoperability
+
+  - term: Schema Evolution
+    definition: >-
+      The ability to add, drop, rename, or reorder columns in a table without
+      rewriting all data files. Iceberg, Delta Lake, and Hudi all support
+      schema evolution with backward and forward compatibility guarantees.
+    category: Core Concept
+    tags:
+      - Schema Management
+
+  - term: Partition Evolution
+    definition: >-
+      The ability to change a table's partitioning strategy without rewriting
+      existing data. Apache Iceberg supports partition evolution, allowing old
+      data to use the original partitioning while new data uses the updated
+      partitioning scheme.
+    category: Apache Iceberg
+    tags:
+      - Partitioning
+      - Apache Iceberg
+
+  - term: Hidden Partitioning
+    definition: >-
+      Apache Iceberg's approach where partition transforms (e.g., day(timestamp),
+      bucket(user_id, 16)) are applied automatically by the engine, without
+      requiring users to add separate partition columns. This eliminates common
+      data engineering mistakes.
+    category: Apache Iceberg
+    tags:
+      - Partitioning
+      - Apache Iceberg
+
+  - term: Time Travel
+    definition: >-
+      The ability to query historical versions of a table by specifying a
+      snapshot ID or timestamp. All three major table formats support time travel,
+      enabling auditing, rollback, and reproducible analytics.
+    category: Core Concept
+    tags:
+      - Time Travel
+      - ACID
+
+  - term: Copy-on-Write (COW)
+    definition: >-
+      A table storage strategy where updates and deletes rewrite entire data files,
+      producing clean Parquet files optimized for read performance. Used in Hudi
+      and Iceberg for read-heavy workloads.
+    category: Storage Strategy
+    tags:
+      - Apache Hudi
+      - Performance
+
+  - term: Merge-on-Read (MOR)
+    definition: >-
+      A table storage strategy where updates and deletes are recorded as delta
+      files (log files or delete files) that are merged with base files during
+      reads. Optimizes write performance at the cost of additional read-time merging.
+    category: Storage Strategy
+    tags:
+      - Apache Hudi
+      - Apache Iceberg
+      - Performance
+
+  - term: Delta Log
+    definition: >-
+      The transaction log used by Delta Lake, stored as a sequence of JSON files
+      in the _delta_log/ directory. Each log entry records the files added,
+      removed, and schema changes in a single transaction.
+    category: Delta Lake
+    tags:
+      - Delta Lake
+      - Transaction Log
+
+  - term: Z-Order
+    definition: >-
+      A data layout optimization technique (used in Delta Lake and Iceberg)
+      that co-locates related data within the same set of files to improve
+      query performance for multi-dimensional filters.
+    category: Performance
+    tags:
+      - Performance
+      - Data Layout
+
+  - term: Lakehouse
+    definition: >-
+      An architecture that combines the low-cost scalable storage of data lakes
+      with the transactional reliability and governance features of data warehouses.
+      Open table formats are the foundational layer enabling the lakehouse paradigm.
+    category: Architecture
+    tags:
+      - Data Architecture
+      - Data Lakehouse
+
+  - term: ACID Transactions
+    definition: >-
+      Atomicity, Consistency, Isolation, and Durability guarantees applied to
+      table operations. Open table formats bring ACID transactions to object storage
+      by using metadata-level coordination rather than row-level locking.
+    category: Core Concept
+    tags:
+      - ACID
+      - Data Integrity

@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api-evangelist.github.io/table-format/json-schema/table-format-iceberg-table-schema.json",
+  "title": "Apache Iceberg Table Metadata",
+  "description": "Schema for Apache Iceberg table metadata structure (v2 format)",
+  "type": "object",
+  "properties": {
+    "format-version": {
+      "type": "integer",
+      "description": "Iceberg table format version (1 or 2)",
+      "enum": [1, 2]
+    },
+    "table-uuid": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the table"
+    },
+    "location": {
+      "type": "string",
+      "description": "Base storage location (e.g., s3://bucket/path/table)"
+    },
+    "last-updated-ms": {
+      "type": "integer",
+      "description": "Timestamp of last update in milliseconds since epoch"
+    },
+    "current-schema-id": {
+      "type": "integer",
+      "description": "ID of the current active schema"
+    },
+    "schemas": {
+      "type": "array",
+      "description": "All schema versions for this table",
+      "items": {
+        "type": "object",
+        "properties": {
+          "schema-id": {"type": "integer"},
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "integer"},
+                "name": {"type": "string"},
+                "type": {"type": "string"},
+                "required": {"type": "boolean"},
+                "doc": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "default-spec-id": {
+      "type": "integer",
+      "description": "ID of the default partition spec"
+    },
+    "partition-specs": {
+      "type": "array",
+      "description": "Partition specifications for the table",
+      "items": {
+        "type": "object",
+        "properties": {
+          "spec-id": {"type": "integer"},
+          "fields": {"type": "array"}
+        }
+      }
+    },
+    "current-snapshot-id": {
+      "type": "integer",
+      "description": "ID of the current table snapshot"
+    },
+    "snapshots": {
+      "type": "array",
+      "description": "List of table snapshots for time travel",
+      "items": {
+        "type": "object",
+        "properties": {
+          "snapshot-id": {"type": "integer"},
+          "parent-snapshot-id": {"type": "integer"},
+          "sequence-number": {"type": "integer"},
+          "timestamp-ms": {"type": "integer"},
+          "manifest-list": {"type": "string"},
+          "summary": {
+            "type": "object",
+            "properties": {
+              "operation": {
+                "type": "string",
+                "enum": ["append", "replace", "overwrite", "delete"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "properties": {
+      "type": "object",
+      "description": "Custom table properties",
+      "additionalProperties": {"type": "string"}
+    }
+  },
+  "required": ["format-version", "table-uuid", "location"]
+}
