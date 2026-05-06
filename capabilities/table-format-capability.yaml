@@ -1,0 +1,679 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Apache Iceberg REST Catalog API
+  description: The Apache Iceberg REST Catalog API is an open standard (OpenAPI spec) for interacting with Apache Iceberg
+    table catalogs. It provides a common HTTP interface for catalog operations including namespace management, table lifecycle,
+    view management, and metadata operations. Multiple catalog implementations support this specification including Apache
+    Polaris, Project Nessie, AWS Glue, and Google BigLake.
+  tags:
+  - Table
+  - Format
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: table-format
+    baseUri: https://localhost:8181
+    description: Apache Iceberg REST Catalog API HTTP API.
+    authentication:
+      type: bearer
+      token: '{{TABLE_FORMAT_TOKEN}}'
+    resources:
+    - name: v1-config
+      path: /v1/config
+      operations:
+      - name: getconfig
+        method: GET
+        description: Get Catalog Configuration
+        inputParameters:
+        - name: warehouse
+          in: query
+          type: string
+          description: Warehouse identifier for multi-tenant catalogs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-oauth-tokens
+      path: /v1/oauth/tokens
+      operations:
+      - name: gettoken
+        method: POST
+        description: Get OAuth2 Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-namespaces
+      path: /v1/namespaces
+      operations:
+      - name: listnamespaces
+        method: GET
+        description: List Namespaces
+        inputParameters:
+        - name: parent
+          in: query
+          type: string
+          description: Parent namespace (for nested namespaces)
+        - name: pageToken
+          in: query
+          type: string
+        - name: pageSize
+          in: query
+          type: integer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createnamespace
+        method: POST
+        description: Create Namespace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-namespaces-namespace
+      path: /v1/namespaces/{namespace}
+      operations:
+      - name: loadnamespacemetadata
+        method: GET
+        description: Get Namespace Metadata
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: dropnamespace
+        method: DELETE
+        description: Drop Namespace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-namespaces-namespace-properties
+      path: /v1/namespaces/{namespace}/properties
+      operations:
+      - name: updatenamespaceproperties
+        method: POST
+        description: Update Namespace Properties
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-namespaces-namespace-tables
+      path: /v1/namespaces/{namespace}/tables
+      operations:
+      - name: listtables
+        method: GET
+        description: List Tables
+        inputParameters:
+        - name: pageToken
+          in: query
+          type: string
+        - name: pageSize
+          in: query
+          type: integer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createtable
+        method: POST
+        description: Create Table
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-namespaces-namespace-tables-table
+      path: /v1/namespaces/{namespace}/tables/{table}
+      operations:
+      - name: loadtable
+        method: GET
+        description: Load Table
+        inputParameters:
+        - name: snapshots
+          in: query
+          type: string
+          description: Which snapshots to return (all, refs, or none)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: committable
+        method: POST
+        description: Commit Table Update
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: droptable
+        method: DELETE
+        description: Drop Table
+        inputParameters:
+        - name: purgeRequested
+          in: query
+          type: boolean
+          description: Whether to purge table data files
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-namespaces-namespace-tables-table-metrics
+      path: /v1/namespaces/{namespace}/tables/{table}/metrics
+      operations:
+      - name: reportmetrics
+        method: POST
+        description: Report Table Metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-namespaces-namespace-views
+      path: /v1/namespaces/{namespace}/views
+      operations:
+      - name: listviews
+        method: GET
+        description: List Views
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createview
+        method: POST
+        description: Create View
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-namespaces-namespace-views-view
+      path: /v1/namespaces/{namespace}/views/{view}
+      operations:
+      - name: loadview
+        method: GET
+        description: Load View
+        inputParameters:
+        - name: view
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: dropview
+        method: DELETE
+        description: Drop View
+        inputParameters:
+        - name: view
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-transactions-commit
+      path: /v1/transactions/commit
+      operations:
+      - name: committransaction
+        method: POST
+        description: Commit Multi-Table Transaction
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: table-format-rest
+    description: REST adapter for Apache Iceberg REST Catalog API.
+    resources:
+    - path: /v1/config
+      name: getconfig
+      operations:
+      - method: GET
+        name: getconfig
+        description: Get Catalog Configuration
+        call: table-format.getconfig
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/oauth/tokens
+      name: gettoken
+      operations:
+      - method: POST
+        name: gettoken
+        description: Get OAuth2 Token
+        call: table-format.gettoken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces
+      name: listnamespaces
+      operations:
+      - method: GET
+        name: listnamespaces
+        description: List Namespaces
+        call: table-format.listnamespaces
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces
+      name: createnamespace
+      operations:
+      - method: POST
+        name: createnamespace
+        description: Create Namespace
+        call: table-format.createnamespace
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces/{namespace}
+      name: loadnamespacemetadata
+      operations:
+      - method: GET
+        name: loadnamespacemetadata
+        description: Get Namespace Metadata
+        call: table-format.loadnamespacemetadata
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces/{namespace}
+      name: dropnamespace
+      operations:
+      - method: DELETE
+        name: dropnamespace
+        description: Drop Namespace
+        call: table-format.dropnamespace
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces/{namespace}/properties
+      name: updatenamespaceproperties
+      operations:
+      - method: POST
+        name: updatenamespaceproperties
+        description: Update Namespace Properties
+        call: table-format.updatenamespaceproperties
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces/{namespace}/tables
+      name: listtables
+      operations:
+      - method: GET
+        name: listtables
+        description: List Tables
+        call: table-format.listtables
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces/{namespace}/tables
+      name: createtable
+      operations:
+      - method: POST
+        name: createtable
+        description: Create Table
+        call: table-format.createtable
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces/{namespace}/tables/{table}
+      name: loadtable
+      operations:
+      - method: GET
+        name: loadtable
+        description: Load Table
+        call: table-format.loadtable
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces/{namespace}/tables/{table}
+      name: committable
+      operations:
+      - method: POST
+        name: committable
+        description: Commit Table Update
+        call: table-format.committable
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces/{namespace}/tables/{table}
+      name: droptable
+      operations:
+      - method: DELETE
+        name: droptable
+        description: Drop Table
+        call: table-format.droptable
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces/{namespace}/tables/{table}/metrics
+      name: reportmetrics
+      operations:
+      - method: POST
+        name: reportmetrics
+        description: Report Table Metrics
+        call: table-format.reportmetrics
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces/{namespace}/views
+      name: listviews
+      operations:
+      - method: GET
+        name: listviews
+        description: List Views
+        call: table-format.listviews
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces/{namespace}/views
+      name: createview
+      operations:
+      - method: POST
+        name: createview
+        description: Create View
+        call: table-format.createview
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces/{namespace}/views/{view}
+      name: loadview
+      operations:
+      - method: GET
+        name: loadview
+        description: Load View
+        call: table-format.loadview
+        with:
+          view: rest.view
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/namespaces/{namespace}/views/{view}
+      name: dropview
+      operations:
+      - method: DELETE
+        name: dropview
+        description: Drop View
+        call: table-format.dropview
+        with:
+          view: rest.view
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/transactions/commit
+      name: committransaction
+      operations:
+      - method: POST
+        name: committransaction
+        description: Commit Multi-Table Transaction
+        call: table-format.committransaction
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: table-format-mcp
+    transport: http
+    description: MCP adapter for Apache Iceberg REST Catalog API for AI agent use.
+    tools:
+    - name: getconfig
+      description: Get Catalog Configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: table-format.getconfig
+      with:
+        warehouse: tools.warehouse
+      inputParameters:
+      - name: warehouse
+        type: string
+        description: Warehouse identifier for multi-tenant catalogs
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: gettoken
+      description: Get OAuth2 Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: table-format.gettoken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listnamespaces
+      description: List Namespaces
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: table-format.listnamespaces
+      with:
+        parent: tools.parent
+        pageToken: tools.pageToken
+        pageSize: tools.pageSize
+      inputParameters:
+      - name: parent
+        type: string
+        description: Parent namespace (for nested namespaces)
+      - name: pageToken
+        type: string
+        description: pageToken
+      - name: pageSize
+        type: integer
+        description: pageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createnamespace
+      description: Create Namespace
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: table-format.createnamespace
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: loadnamespacemetadata
+      description: Get Namespace Metadata
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: table-format.loadnamespacemetadata
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: dropnamespace
+      description: Drop Namespace
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: table-format.dropnamespace
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatenamespaceproperties
+      description: Update Namespace Properties
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: table-format.updatenamespaceproperties
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listtables
+      description: List Tables
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: table-format.listtables
+      with:
+        pageToken: tools.pageToken
+        pageSize: tools.pageSize
+      inputParameters:
+      - name: pageToken
+        type: string
+        description: pageToken
+      - name: pageSize
+        type: integer
+        description: pageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createtable
+      description: Create Table
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: table-format.createtable
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: loadtable
+      description: Load Table
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: table-format.loadtable
+      with:
+        snapshots: tools.snapshots
+      inputParameters:
+      - name: snapshots
+        type: string
+        description: Which snapshots to return (all, refs, or none)
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: committable
+      description: Commit Table Update
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: table-format.committable
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: droptable
+      description: Drop Table
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: table-format.droptable
+      with:
+        purgeRequested: tools.purgeRequested
+      inputParameters:
+      - name: purgeRequested
+        type: boolean
+        description: Whether to purge table data files
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: reportmetrics
+      description: Report Table Metrics
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: table-format.reportmetrics
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listviews
+      description: List Views
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: table-format.listviews
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createview
+      description: Create View
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: table-format.createview
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: loadview
+      description: Load View
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: table-format.loadview
+      with:
+        view: tools.view
+      inputParameters:
+      - name: view
+        type: string
+        description: view
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: dropview
+      description: Drop View
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: table-format.dropview
+      with:
+        view: tools.view
+      inputParameters:
+      - name: view
+        type: string
+        description: view
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: committransaction
+      description: Commit Multi-Table Transaction
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: table-format.committransaction
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    TABLE_FORMAT_TOKEN: TABLE_FORMAT_TOKEN
