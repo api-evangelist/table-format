@@ -1,0 +1,223 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Apache Iceberg REST Catalog API — Namespaces
+  description: 'Apache Iceberg REST Catalog API — Namespaces. 5 operations. Lead operation: List Namespaces. Self-contained
+    Naftiko capability covering one Table Format business surface.'
+  tags:
+  - Table Format
+  - Namespaces
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TABLE_FORMAT_API_KEY: TABLE_FORMAT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: apache-iceberg-rest-catalog-namespaces
+    baseUri: https://{catalog-host}
+    description: Apache Iceberg REST Catalog API — Namespaces business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-namespaces
+      path: /v1/namespaces
+      operations:
+      - name: listnamespaces
+        method: GET
+        description: List Namespaces
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: parent
+          in: query
+          type: string
+          description: Parent namespace (for nested namespaces)
+        - name: pageToken
+          in: query
+          type: string
+        - name: pageSize
+          in: query
+          type: integer
+      - name: createnamespace
+        method: POST
+        description: Create Namespace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v1-namespaces-namespace
+      path: /v1/namespaces/{namespace}
+      operations:
+      - name: loadnamespacemetadata
+        method: GET
+        description: Get Namespace Metadata
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: dropnamespace
+        method: DELETE
+        description: Drop Namespace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v1-namespaces-namespace-properties
+      path: /v1/namespaces/{namespace}/properties
+      operations:
+      - name: updatenamespaceproperties
+        method: POST
+        description: Update Namespace Properties
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.TABLE_FORMAT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: apache-iceberg-rest-catalog-namespaces-rest
+    port: 8080
+    description: REST adapter for Apache Iceberg REST Catalog API — Namespaces. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/v1/namespaces
+      name: v1-namespaces
+      description: REST surface for v1-namespaces.
+      operations:
+      - method: GET
+        name: listnamespaces
+        description: List Namespaces
+        call: apache-iceberg-rest-catalog-namespaces.listnamespaces
+        with:
+          parent: rest.parent
+          pageToken: rest.pageToken
+          pageSize: rest.pageSize
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createnamespace
+        description: Create Namespace
+        call: apache-iceberg-rest-catalog-namespaces.createnamespace
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/namespaces/{namespace}
+      name: v1-namespaces-namespace
+      description: REST surface for v1-namespaces-namespace.
+      operations:
+      - method: GET
+        name: loadnamespacemetadata
+        description: Get Namespace Metadata
+        call: apache-iceberg-rest-catalog-namespaces.loadnamespacemetadata
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: dropnamespace
+        description: Drop Namespace
+        call: apache-iceberg-rest-catalog-namespaces.dropnamespace
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/namespaces/{namespace}/properties
+      name: v1-namespaces-namespace-properties
+      description: REST surface for v1-namespaces-namespace-properties.
+      operations:
+      - method: POST
+        name: updatenamespaceproperties
+        description: Update Namespace Properties
+        call: apache-iceberg-rest-catalog-namespaces.updatenamespaceproperties
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: apache-iceberg-rest-catalog-namespaces-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Apache Iceberg REST Catalog API — Namespaces. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: list-namespaces
+      description: List Namespaces
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: apache-iceberg-rest-catalog-namespaces.listnamespaces
+      with:
+        parent: tools.parent
+        pageToken: tools.pageToken
+        pageSize: tools.pageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-namespace
+      description: Create Namespace
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: apache-iceberg-rest-catalog-namespaces.createnamespace
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-namespace-metadata
+      description: Get Namespace Metadata
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: apache-iceberg-rest-catalog-namespaces.loadnamespacemetadata
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: drop-namespace
+      description: Drop Namespace
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: apache-iceberg-rest-catalog-namespaces.dropnamespace
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-namespace-properties
+      description: Update Namespace Properties
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: apache-iceberg-rest-catalog-namespaces.updatenamespaceproperties
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

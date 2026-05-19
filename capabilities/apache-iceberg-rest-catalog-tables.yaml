@@ -1,0 +1,270 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Apache Iceberg REST Catalog API — Tables
+  description: 'Apache Iceberg REST Catalog API — Tables. 6 operations. Lead operation: List Tables. Self-contained Naftiko
+    capability covering one Table Format business surface.'
+  tags:
+  - Table Format
+  - Tables
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TABLE_FORMAT_API_KEY: TABLE_FORMAT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: apache-iceberg-rest-catalog-tables
+    baseUri: https://{catalog-host}
+    description: Apache Iceberg REST Catalog API — Tables business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-namespaces-namespace-tables
+      path: /v1/namespaces/{namespace}/tables
+      operations:
+      - name: listtables
+        method: GET
+        description: List Tables
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: pageToken
+          in: query
+          type: string
+        - name: pageSize
+          in: query
+          type: integer
+      - name: createtable
+        method: POST
+        description: Create Table
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v1-namespaces-namespace-tables-table
+      path: /v1/namespaces/{namespace}/tables/{table}
+      operations:
+      - name: loadtable
+        method: GET
+        description: Load Table
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: snapshots
+          in: query
+          type: string
+          description: Which snapshots to return (all, refs, or none)
+      - name: committable
+        method: POST
+        description: Commit Table Update
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: droptable
+        method: DELETE
+        description: Drop Table
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: purgeRequested
+          in: query
+          type: boolean
+          description: Whether to purge table data files
+    - name: v1-namespaces-namespace-tables-table-metrics
+      path: /v1/namespaces/{namespace}/tables/{table}/metrics
+      operations:
+      - name: reportmetrics
+        method: POST
+        description: Report Table Metrics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.TABLE_FORMAT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: apache-iceberg-rest-catalog-tables-rest
+    port: 8080
+    description: REST adapter for Apache Iceberg REST Catalog API — Tables. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/namespaces/{namespace}/tables
+      name: v1-namespaces-namespace-tables
+      description: REST surface for v1-namespaces-namespace-tables.
+      operations:
+      - method: GET
+        name: listtables
+        description: List Tables
+        call: apache-iceberg-rest-catalog-tables.listtables
+        with:
+          pageToken: rest.pageToken
+          pageSize: rest.pageSize
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createtable
+        description: Create Table
+        call: apache-iceberg-rest-catalog-tables.createtable
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/namespaces/{namespace}/tables/{table}
+      name: v1-namespaces-namespace-tables-table
+      description: REST surface for v1-namespaces-namespace-tables-table.
+      operations:
+      - method: GET
+        name: loadtable
+        description: Load Table
+        call: apache-iceberg-rest-catalog-tables.loadtable
+        with:
+          snapshots: rest.snapshots
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: committable
+        description: Commit Table Update
+        call: apache-iceberg-rest-catalog-tables.committable
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: droptable
+        description: Drop Table
+        call: apache-iceberg-rest-catalog-tables.droptable
+        with:
+          purgeRequested: rest.purgeRequested
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/namespaces/{namespace}/tables/{table}/metrics
+      name: v1-namespaces-namespace-tables-table-metrics
+      description: REST surface for v1-namespaces-namespace-tables-table-metrics.
+      operations:
+      - method: POST
+        name: reportmetrics
+        description: Report Table Metrics
+        call: apache-iceberg-rest-catalog-tables.reportmetrics
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: apache-iceberg-rest-catalog-tables-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Apache Iceberg REST Catalog API — Tables. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: list-tables
+      description: List Tables
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: apache-iceberg-rest-catalog-tables.listtables
+      with:
+        pageToken: tools.pageToken
+        pageSize: tools.pageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-table
+      description: Create Table
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: apache-iceberg-rest-catalog-tables.createtable
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: load-table
+      description: Load Table
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: apache-iceberg-rest-catalog-tables.loadtable
+      with:
+        snapshots: tools.snapshots
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: commit-table-update
+      description: Commit Table Update
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: apache-iceberg-rest-catalog-tables.committable
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: drop-table
+      description: Drop Table
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: apache-iceberg-rest-catalog-tables.droptable
+      with:
+        purgeRequested: tools.purgeRequested
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: report-table-metrics
+      description: Report Table Metrics
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: apache-iceberg-rest-catalog-tables.reportmetrics
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
