@@ -104,6 +104,10 @@ apis:
       - type: GitHub
         url: https://github.com/unitycatalog/unitycatalog
 common:
+  - type: Authentication
+    url: authentication/table-format-authentication.yml
+  - type: OAuthScopes
+    url: scopes/table-format-scopes.yml
   - type: Wikipedia
     url: https://en.wikipedia.org/wiki/Apache_Iceberg
   - type: Apache Iceberg
@@ -123,6 +127,8 @@ common:
   - type: Vocabulary
     url: >-
       https://raw.githubusercontent.com/api-evangelist/table-format/refs/heads/main/vocabulary/table-format-vocabulary.yml
+  - url: https://iceberg.apache.org/feed_rss_updated.xml
+    type: Blog
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

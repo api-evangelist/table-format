@@ -1,0 +1,16 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/apache-iceberg-rest-catalog-openapi.yml
+schemes:
+- name: OAuth2
+  source: openapi/apache-iceberg-rest-catalog-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: /v1/oauth/tokens
+scopes:
+- scope: catalog
+  description: Access catalog operations
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/apache-iceberg-rest-catalog-openapi.yml
