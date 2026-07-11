@@ -104,6 +104,10 @@ apis:
       - type: GitHub
         url: https://github.com/unitycatalog/unitycatalog
 common:
+  - type: VulnerabilityDisclosure
+    url: security/table-format-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/table-format-domain-security.yml
   - type: Authentication
     url: authentication/table-format-authentication.yml
   - type: OAuthScopes

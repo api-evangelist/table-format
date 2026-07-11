@@ -1,0 +1,23 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/apache-iceberg-rest-catalog-openapi.yml
+summary:
+  types:
+  - http
+  - oauth2
+  oauth2_flows:
+  - clientCredentials
+schemes:
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  sources:
+  - openapi/apache-iceberg-rest-catalog-openapi.yml
+- name: OAuth2
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: /v1/oauth/tokens
+    scopes: 1
+  sources:
+  - openapi/apache-iceberg-rest-catalog-openapi.yml
