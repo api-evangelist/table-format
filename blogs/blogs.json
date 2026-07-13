@@ -1,0 +1,14 @@
+{
+  "repo": "table-format",
+  "feeds": [
+    {
+      "source": "https://iceberg.apache.org/feed_rss_updated.xml",
+      "feed_url": "https://iceberg.apache.org/feed_rss_updated.xml",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    }
+  ],
+  "fetched": "2026-07-11T11:50:51Z",
+  "post_count": 17
+}
