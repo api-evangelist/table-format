@@ -104,6 +104,8 @@ apis:
       - type: GitHub
         url: https://github.com/unitycatalog/unitycatalog
 common:
+  - type: AgenticAccess
+    url: agentic-access/table-format-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/table-format-vulnerability-disclosure.yml
   - type: DomainSecurity
