@@ -1,0 +1,211 @@
+openapi: 3.0.3
+info:
+  title: Apache Iceberg REST Catalog Commits Views API
+  description: The Apache Iceberg REST Catalog API is an open standard (OpenAPI spec) for interacting with Apache Iceberg table catalogs. It provides a common HTTP interface for catalog operations including namespace management, table lifecycle, view management, and metadata operations. Multiple catalog implementations support this specification including Apache Polaris, Project Nessie, AWS Glue, and Google BigLake.
+  version: 0.0.1
+  contact:
+    name: Apache Iceberg Community
+    url: https://iceberg.apache.org/community/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{catalog-host}
+  description: Iceberg REST Catalog endpoint
+  variables:
+    catalog-host:
+      default: localhost:8181
+      description: Hostname and port of the Iceberg REST catalog service
+security:
+- BearerAuth: []
+- OAuth2:
+  - catalog
+tags:
+- name: Views
+  description: View lifecycle management
+paths:
+  /v1/namespaces/{namespace}/views:
+    get:
+      operationId: listViews
+      summary: List Views
+      description: List all views in a namespace.
+      tags:
+      - Views
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: List of views
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTablesResponse'
+    post:
+      operationId: createView
+      summary: Create View
+      description: Create a new Iceberg view in the namespace.
+      tags:
+      - Views
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateViewRequest'
+      responses:
+        '200':
+          description: View created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadViewResult'
+  /v1/namespaces/{namespace}/views/{view}:
+    get:
+      operationId: loadView
+      summary: Load View
+      description: Load a view from the catalog.
+      tags:
+      - Views
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      - name: view
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: View metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadViewResult'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: dropView
+      summary: Drop View
+      description: Drop a view from the catalog.
+      tags:
+      - Views
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      - name: view
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: View dropped
+components:
+  schemas:
+    LoadViewResult:
+      type: object
+      properties:
+        metadata-location:
+          type: string
+        metadata:
+          type: object
+    IcebergErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: integer
+    ListTablesResponse:
+      type: object
+      properties:
+        identifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/TableIdentifier'
+        next-page-token:
+          type: string
+    StructField:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+        required:
+          type: boolean
+        doc:
+          type: string
+    CreateViewRequest:
+      type: object
+      required:
+      - name
+      - schema
+      - view-version
+      properties:
+        name:
+          type: string
+        location:
+          type: string
+        schema:
+          $ref: '#/components/schemas/Schema'
+        view-version:
+          type: object
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    TableIdentifier:
+      type: object
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+    Schema:
+      type: object
+      properties:
+        schema-id:
+          type: integer
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructField'
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IcebergErrorResponse'
+  parameters:
+    NamespaceParam:
+      name: namespace
+      in: path
+      required: true
+      description: Namespace identifier (can be multi-level with ASCII unit separator)
+      schema:
+        type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v1/oauth/tokens
+          scopes:
+            catalog: Access catalog operations
+externalDocs:
+  description: Apache Iceberg REST Catalog Specification
+  url: https://iceberg.apache.org/rest-catalog-spec/

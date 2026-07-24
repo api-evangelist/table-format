@@ -1,0 +1,261 @@
+openapi: 3.0.3
+info:
+  title: Apache Iceberg REST Catalog Commits Namespaces API
+  description: The Apache Iceberg REST Catalog API is an open standard (OpenAPI spec) for interacting with Apache Iceberg table catalogs. It provides a common HTTP interface for catalog operations including namespace management, table lifecycle, view management, and metadata operations. Multiple catalog implementations support this specification including Apache Polaris, Project Nessie, AWS Glue, and Google BigLake.
+  version: 0.0.1
+  contact:
+    name: Apache Iceberg Community
+    url: https://iceberg.apache.org/community/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{catalog-host}
+  description: Iceberg REST Catalog endpoint
+  variables:
+    catalog-host:
+      default: localhost:8181
+      description: Hostname and port of the Iceberg REST catalog service
+security:
+- BearerAuth: []
+- OAuth2:
+  - catalog
+tags:
+- name: Namespaces
+  description: Namespace (database/schema) management
+paths:
+  /v1/namespaces:
+    get:
+      operationId: listNamespaces
+      summary: List Namespaces
+      description: List all namespaces. A namespace is a container for tables, analogous to a database or schema.
+      tags:
+      - Namespaces
+      parameters:
+      - name: parent
+        in: query
+        description: Parent namespace (for nested namespaces)
+        required: false
+        schema:
+          type: string
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: List of namespaces
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListNamespacesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createNamespace
+      summary: Create Namespace
+      description: Create a new namespace with optional properties.
+      tags:
+      - Namespaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNamespaceRequest'
+      responses:
+        '200':
+          description: Namespace created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateNamespaceResponse'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /v1/namespaces/{namespace}:
+    get:
+      operationId: loadNamespaceMetadata
+      summary: Get Namespace Metadata
+      description: Load metadata properties for a namespace.
+      tags:
+      - Namespaces
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: Namespace metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNamespaceResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: dropNamespace
+      summary: Drop Namespace
+      description: Drop a namespace. The namespace must be empty.
+      tags:
+      - Namespaces
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '204':
+          description: Namespace dropped
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/namespaces/{namespace}/properties:
+    post:
+      operationId: updateNamespaceProperties
+      summary: Update Namespace Properties
+      description: Set or remove namespace properties.
+      tags:
+      - Namespaces
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNamespacePropertiesRequest'
+      responses:
+        '200':
+          description: Properties updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateNamespacePropertiesResponse'
+components:
+  schemas:
+    UpdateNamespacePropertiesRequest:
+      type: object
+      properties:
+        removals:
+          type: array
+          items:
+            type: string
+        updates:
+          type: object
+          additionalProperties:
+            type: string
+    IcebergErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: integer
+    GetNamespaceResponse:
+      type: object
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    ListNamespacesResponse:
+      type: object
+      properties:
+        namespaces:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        next-page-token:
+          type: string
+    UpdateNamespacePropertiesResponse:
+      type: object
+      properties:
+        updated:
+          type: array
+          items:
+            type: string
+        removed:
+          type: array
+          items:
+            type: string
+        missing:
+          type: array
+          items:
+            type: string
+    CreateNamespaceResponse:
+      type: object
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    CreateNamespaceRequest:
+      type: object
+      required:
+      - namespace
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+          description: Namespace identifier parts (e.g., ["mydb"] or ["catalog", "schema"])
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+  parameters:
+    NamespaceParam:
+      name: namespace
+      in: path
+      required: true
+      description: Namespace identifier (can be multi-level with ASCII unit separator)
+      schema:
+        type: string
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IcebergErrorResponse'
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IcebergErrorResponse'
+    Conflict:
+      description: Commit conflict or resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IcebergErrorResponse'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v1/oauth/tokens
+          scopes:
+            catalog: Access catalog operations
+externalDocs:
+  description: Apache Iceberg REST Catalog Specification
+  url: https://iceberg.apache.org/rest-catalog-spec/

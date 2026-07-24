@@ -1,0 +1,106 @@
+openapi: 3.0.3
+info:
+  title: Apache Iceberg REST Catalog Commits OAuth2 API
+  description: The Apache Iceberg REST Catalog API is an open standard (OpenAPI spec) for interacting with Apache Iceberg table catalogs. It provides a common HTTP interface for catalog operations including namespace management, table lifecycle, view management, and metadata operations. Multiple catalog implementations support this specification including Apache Polaris, Project Nessie, AWS Glue, and Google BigLake.
+  version: 0.0.1
+  contact:
+    name: Apache Iceberg Community
+    url: https://iceberg.apache.org/community/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{catalog-host}
+  description: Iceberg REST Catalog endpoint
+  variables:
+    catalog-host:
+      default: localhost:8181
+      description: Hostname and port of the Iceberg REST catalog service
+security:
+- BearerAuth: []
+- OAuth2:
+  - catalog
+tags:
+- name: OAuth2
+  description: OAuth2 token management
+paths:
+  /v1/oauth/tokens:
+    post:
+      operationId: getToken
+      summary: Get OAuth2 Token
+      description: Exchange credentials for an OAuth2 access token for catalog access.
+      tags:
+      - OAuth2
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  enum:
+                  - client_credentials
+                  - urn:ietf:params:oauth:grant-type:token-exchange
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+                scope:
+                  type: string
+      responses:
+        '200':
+          description: OAuth2 token response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthTokenResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+components:
+  schemas:
+    IcebergErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: integer
+    OAuthTokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+        expires_in:
+          type: integer
+        scope:
+          type: string
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IcebergErrorResponse'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v1/oauth/tokens
+          scopes:
+            catalog: Access catalog operations
+externalDocs:
+  description: Apache Iceberg REST Catalog Specification
+  url: https://iceberg.apache.org/rest-catalog-spec/

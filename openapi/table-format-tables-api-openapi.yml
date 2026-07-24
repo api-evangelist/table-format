@@ -1,0 +1,409 @@
+openapi: 3.0.3
+info:
+  title: Apache Iceberg REST Catalog Commits Tables API
+  description: The Apache Iceberg REST Catalog API is an open standard (OpenAPI spec) for interacting with Apache Iceberg table catalogs. It provides a common HTTP interface for catalog operations including namespace management, table lifecycle, view management, and metadata operations. Multiple catalog implementations support this specification including Apache Polaris, Project Nessie, AWS Glue, and Google BigLake.
+  version: 0.0.1
+  contact:
+    name: Apache Iceberg Community
+    url: https://iceberg.apache.org/community/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{catalog-host}
+  description: Iceberg REST Catalog endpoint
+  variables:
+    catalog-host:
+      default: localhost:8181
+      description: Hostname and port of the Iceberg REST catalog service
+security:
+- BearerAuth: []
+- OAuth2:
+  - catalog
+tags:
+- name: Tables
+  description: Table creation, listing, loading, and management
+paths:
+  /v1/namespaces/{namespace}/tables:
+    get:
+      operationId: listTables
+      summary: List Tables
+      description: List all tables in a namespace.
+      tags:
+      - Tables
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      - name: pageToken
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: List of tables
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTablesResponse'
+    post:
+      operationId: createTable
+      summary: Create Table
+      description: Create a new Iceberg table in the given namespace.
+      tags:
+      - Tables
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTableRequest'
+      responses:
+        '200':
+          description: Table created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadTableResult'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /v1/namespaces/{namespace}/tables/{table}:
+    get:
+      operationId: loadTable
+      summary: Load Table
+      description: Load a table from the catalog, returning metadata and a token for updates.
+      tags:
+      - Tables
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      - $ref: '#/components/parameters/TableParam'
+      - name: snapshots
+        in: query
+        description: Which snapshots to return (all, refs, or none)
+        required: false
+        schema:
+          type: string
+          enum:
+          - all
+          - refs
+      responses:
+        '200':
+          description: Table metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadTableResult'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: commitTable
+      summary: Commit Table Update
+      description: Commit a set of table requirement assertions and metadata updates atomically.
+      tags:
+      - Tables
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      - $ref: '#/components/parameters/TableParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommitTableRequest'
+      responses:
+        '200':
+          description: Commit applied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommitTableResponse'
+        '409':
+          $ref: '#/components/responses/Conflict'
+    delete:
+      operationId: dropTable
+      summary: Drop Table
+      description: Drop a table from the catalog. Optionally purge the data files.
+      tags:
+      - Tables
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      - $ref: '#/components/parameters/TableParam'
+      - name: purgeRequested
+        in: query
+        description: Whether to purge table data files
+        required: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '204':
+          description: Table dropped
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/namespaces/{namespace}/tables/{table}/metrics:
+    post:
+      operationId: reportMetrics
+      summary: Report Table Metrics
+      description: Send scan metrics and commit metrics to the catalog for observability.
+      tags:
+      - Tables
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      - $ref: '#/components/parameters/TableParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportMetricsRequest'
+      responses:
+        '204':
+          description: Metrics reported
+components:
+  schemas:
+    IcebergErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: integer
+    CreateTableRequest:
+      type: object
+      required:
+      - name
+      - schema
+      properties:
+        name:
+          type: string
+        location:
+          type: string
+        schema:
+          $ref: '#/components/schemas/Schema'
+        partition-spec:
+          $ref: '#/components/schemas/PartitionSpec'
+        write-order:
+          $ref: '#/components/schemas/SortOrder'
+        stage-create:
+          type: boolean
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    ReportMetricsRequest:
+      type: object
+      properties:
+        report-type:
+          type: string
+          enum:
+          - scan-report
+          - commit-report
+        metrics:
+          type: object
+    ListTablesResponse:
+      type: object
+      properties:
+        identifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/TableIdentifier'
+        next-page-token:
+          type: string
+    StructField:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+        required:
+          type: boolean
+        doc:
+          type: string
+    Snapshot:
+      type: object
+      properties:
+        snapshot-id:
+          type: integer
+          format: int64
+        parent-snapshot-id:
+          type: integer
+          format: int64
+        sequence-number:
+          type: integer
+          format: int64
+        timestamp-ms:
+          type: integer
+          format: int64
+        manifest-list:
+          type: string
+        summary:
+          type: object
+          properties:
+            operation:
+              type: string
+              enum:
+              - append
+              - replace
+              - overwrite
+              - delete
+    SortOrder:
+      type: object
+      properties:
+        order-id:
+          type: integer
+        fields:
+          type: array
+          items:
+            type: object
+    TableIdentifier:
+      type: object
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+    LoadTableResult:
+      type: object
+      properties:
+        metadata-location:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/TableMetadata'
+        config:
+          type: object
+          additionalProperties:
+            type: string
+    TableMetadata:
+      type: object
+      properties:
+        format-version:
+          type: integer
+        table-uuid:
+          type: string
+        location:
+          type: string
+        last-updated-ms:
+          type: integer
+          format: int64
+        current-schema-id:
+          type: integer
+        schemas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schema'
+        default-spec-id:
+          type: integer
+        partition-specs:
+          type: array
+          items:
+            $ref: '#/components/schemas/PartitionSpec'
+        current-snapshot-id:
+          type: integer
+          format: int64
+        snapshots:
+          type: array
+          items:
+            $ref: '#/components/schemas/Snapshot'
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    Schema:
+      type: object
+      properties:
+        schema-id:
+          type: integer
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructField'
+    PartitionSpec:
+      type: object
+      properties:
+        spec-id:
+          type: integer
+        fields:
+          type: array
+          items:
+            type: object
+    CommitTableRequest:
+      type: object
+      required:
+      - requirements
+      - updates
+      properties:
+        identifier:
+          $ref: '#/components/schemas/TableIdentifier'
+        requirements:
+          type: array
+          items:
+            type: object
+        updates:
+          type: array
+          items:
+            type: object
+    CommitTableResponse:
+      type: object
+      properties:
+        metadata-location:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/TableMetadata'
+  parameters:
+    TableParam:
+      name: table
+      in: path
+      required: true
+      description: Table name
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: path
+      required: true
+      description: Namespace identifier (can be multi-level with ASCII unit separator)
+      schema:
+        type: string
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IcebergErrorResponse'
+    Conflict:
+      description: Commit conflict or resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IcebergErrorResponse'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /v1/oauth/tokens
+          scopes:
+            catalog: Access catalog operations
+externalDocs:
+  description: Apache Iceberg REST Catalog Specification
+  url: https://iceberg.apache.org/rest-catalog-spec/
