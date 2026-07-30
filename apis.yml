@@ -8,7 +8,20 @@ description: >-
   efficient query planning to data lake storage. Apache Iceberg defines a REST Catalog API (OpenAPI spec) that enables
   standardized catalog operations across implementations like Polaris, Nessie, AWS Glue, and Google BigLake.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/table-format.png
 tags:
   - Data Lakehouse
   - Open Table Format
@@ -24,85 +37,150 @@ created: '2025'
 modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
-  - aid: table-format:apache-iceberg-rest-catalog
-    name: Apache Iceberg REST Catalog API
-    description: >-
-      The Apache Iceberg REST Catalog API is an open OpenAPI specification that defines a standard interface for
-      interacting with Apache Iceberg table catalogs. It enables catalog operations including namespace management,
-      table creation, schema updates, and metadata retrieval across any compliant catalog implementation (Polaris,
-      Nessie, AWS Glue, Google BigLake).
-    humanURL: https://iceberg.apache.org/rest-catalog-spec/
-    baseURL: https://catalog-service/
-    tags:
-      - Apache Iceberg
-      - Data Catalog
-      - REST Catalog
-      - Data Lakehouse
-    properties:
-      - type: Documentation
-        url: https://iceberg.apache.org/rest-catalog-spec/
-      - type: OpenAPI
-        url: https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml
-      - type: GitHub
-        url: https://github.com/apache/iceberg
-      - type: OpenAPI
-        url: >-
-          https://raw.githubusercontent.com/api-evangelist/table-format/refs/heads/main/openapi/apache-iceberg-rest-catalog-openapi.yml
-  - aid: table-format:delta-lake
-    name: Delta Lake
-    description: >-
-      Delta Lake is an open-source storage framework developed by Databricks that adds reliability, performance, and
-      ACID compliance to data lakes. It uses a transaction log (delta log) to record all changes to data. Delta Lake is
-      deeply integrated with Apache Spark and supports batch and streaming workloads, schema enforcement, time travel,
-      and MERGE operations.
-    humanURL: https://delta.io/
-    tags:
-      - Delta Lake
-      - Data Lake
-      - ACID Transactions
-      - Apache Spark
-      - Databricks
-    properties:
-      - type: Documentation
-        url: https://docs.delta.io/
-      - type: GitHub
-        url: https://github.com/delta-io/delta
-  - aid: table-format:apache-hudi
-    name: Apache Hudi
-    description: >-
-      Apache Hudi (Hadoop Upserts Deletes and Incrementals) is an open-source data lakehouse platform optimized for
-      upserts, deletes, and incremental data processing. It supports Copy-on-Write (COW) and Merge-on-Read (MOR) table
-      types and is used for CDC-based data pipelines and streaming analytics.
-    humanURL: https://hudi.apache.org/
-    tags:
-      - Apache Hudi
-      - Data Lake
-      - CDC
-      - Incremental Processing
-    properties:
-      - type: Documentation
-        url: https://hudi.apache.org/docs/overview/
-      - type: GitHub
-        url: https://github.com/apache/hudi
-  - aid: table-format:unity-catalog
-    name: Unity Catalog
-    description: >-
-      Unity Catalog is an open-source, multi-modal catalog for data and AI that supports Apache Iceberg REST Catalog
-      API, Apache Hive Metastore (HMS) API, and Delta Sharing. It provides unified governance across Delta Lake,
-      Iceberg, and Hudi tables with an OpenAPI specification under Apache 2.0 license.
-    humanURL: https://www.unitycatalog.io/
-    tags:
-      - Data Catalog
-      - Unity Catalog
-      - Data Governance
-      - Multi-format
-    properties:
-      - type: Documentation
-        url: https://www.unitycatalog.io/
-      - type: OpenAPI
-        url: https://github.com/unitycatalog/unitycatalog/blob/main/api/all.yaml
-      - type: GitHub
-        url: https://github.com/unitycatalog/unitycatalog
+- aid: table-format:delta-lake
+  name: Delta Lake
+  description: >-
+    Delta Lake is an open-source storage framework developed by Databricks that adds reliability, performance,
+    and ACID compliance to data lakes. It uses a transaction log (delta log) to record all changes to
+    data. Delta Lake is deeply integrated with Apache Spark and supports batch and streaming workloads,
+    schema enforcement, time travel, and MERGE operations.
+  humanURL: https://delta.io/
+  tags:
+  - Delta Lake
+  - Data Lake
+  - ACID Transactions
+  - Apache Spark
+  - Databricks
+  properties:
+  - type: Documentation
+    url: https://docs.delta.io/
+  - type: GitHub
+    url: https://github.com/delta-io/delta
+- aid: table-format:apache-hudi
+  name: Apache Hudi
+  description: >-
+    Apache Hudi (Hadoop Upserts Deletes and Incrementals) is an open-source data lakehouse platform optimized
+    for upserts, deletes, and incremental data processing. It supports Copy-on-Write (COW) and Merge-on-Read
+    (MOR) table types and is used for CDC-based data pipelines and streaming analytics.
+  humanURL: https://hudi.apache.org/
+  tags:
+  - Apache Hudi
+  - Data Lake
+  - CDC
+  - Incremental Processing
+  properties:
+  - type: Documentation
+    url: https://hudi.apache.org/docs/overview/
+  - type: GitHub
+    url: https://github.com/apache/hudi
+- aid: table-format:table-format-commits-api
+  name: Table Format Commits API
+  description: Transaction commits and metadata updates
+  humanURL: https://iceberg.apache.org/rest-catalog-spec/
+  baseURL: https://catalog-service/
+  tags:
+  - Commits
+  properties:
+  - type: OpenAPI
+    url: openapi/table-format-commits-api-openapi.yml
+  - type: Documentation
+    url: https://iceberg.apache.org/rest-catalog-spec/
+  - type: GitHub
+    url: https://github.com/apache/iceberg
+  - type: Documentation
+    url: https://www.unitycatalog.io/
+  - type: GitHub
+    url: https://github.com/unitycatalog/unitycatalog
+- aid: table-format:table-format-configuration-api
+  name: Table Format Configuration API
+  description: Catalog configuration and discovery
+  humanURL: https://iceberg.apache.org/rest-catalog-spec/
+  baseURL: https://catalog-service/
+  tags:
+  - Configuration
+  properties:
+  - type: OpenAPI
+    url: openapi/table-format-configuration-api-openapi.yml
+  - type: Documentation
+    url: https://iceberg.apache.org/rest-catalog-spec/
+  - type: GitHub
+    url: https://github.com/apache/iceberg
+  - type: Documentation
+    url: https://www.unitycatalog.io/
+  - type: GitHub
+    url: https://github.com/unitycatalog/unitycatalog
+- aid: table-format:table-format-namespaces-api
+  name: Table Format Namespaces API
+  description: Namespace (database/schema) management
+  humanURL: https://iceberg.apache.org/rest-catalog-spec/
+  baseURL: https://catalog-service/
+  tags:
+  - Namespaces
+  properties:
+  - type: OpenAPI
+    url: openapi/table-format-namespaces-api-openapi.yml
+  - type: Documentation
+    url: https://iceberg.apache.org/rest-catalog-spec/
+  - type: GitHub
+    url: https://github.com/apache/iceberg
+  - type: Documentation
+    url: https://www.unitycatalog.io/
+  - type: GitHub
+    url: https://github.com/unitycatalog/unitycatalog
+- aid: table-format:table-format-oauth2-api
+  name: Table Format OAuth2 API
+  description: OAuth2 token management
+  humanURL: https://iceberg.apache.org/rest-catalog-spec/
+  baseURL: https://catalog-service/
+  tags:
+  - OAuth2
+  properties:
+  - type: OpenAPI
+    url: openapi/table-format-oauth2-api-openapi.yml
+  - type: Documentation
+    url: https://iceberg.apache.org/rest-catalog-spec/
+  - type: GitHub
+    url: https://github.com/apache/iceberg
+  - type: Documentation
+    url: https://www.unitycatalog.io/
+  - type: GitHub
+    url: https://github.com/unitycatalog/unitycatalog
+- aid: table-format:table-format-tables-api
+  name: Table Format Tables API
+  description: Table creation, listing, loading, and management
+  humanURL: https://iceberg.apache.org/rest-catalog-spec/
+  baseURL: https://catalog-service/
+  tags:
+  - Tables
+  properties:
+  - type: OpenAPI
+    url: openapi/table-format-tables-api-openapi.yml
+  - type: Documentation
+    url: https://iceberg.apache.org/rest-catalog-spec/
+  - type: GitHub
+    url: https://github.com/apache/iceberg
+  - type: Documentation
+    url: https://www.unitycatalog.io/
+  - type: GitHub
+    url: https://github.com/unitycatalog/unitycatalog
+- aid: table-format:table-format-views-api
+  name: Table Format Views API
+  description: View lifecycle management
+  humanURL: https://iceberg.apache.org/rest-catalog-spec/
+  baseURL: https://catalog-service/
+  tags:
+  - Views
+  properties:
+  - type: OpenAPI
+    url: openapi/table-format-views-api-openapi.yml
+  - type: Documentation
+    url: https://iceberg.apache.org/rest-catalog-spec/
+  - type: GitHub
+    url: https://github.com/apache/iceberg
+  - type: Documentation
+    url: https://www.unitycatalog.io/
+  - type: GitHub
+    url: https://github.com/unitycatalog/unitycatalog
 common:
   - type: AgenticAccess
     url: agentic-access/table-format-agentic-access.yml
