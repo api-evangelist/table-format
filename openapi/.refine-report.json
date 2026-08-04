@@ -1,0 +1,24 @@
+{
+  "provider": "table-format",
+  "sources": [
+    "table-format-commits-api-openapi.yml",
+    "table-format-configuration-api-openapi.yml",
+    "table-format-namespaces-api-openapi.yml",
+    "table-format-oauth2-api-openapi.yml",
+    "table-format-tables-api-openapi.yml",
+    "table-format-views-api-openapi.yml"
+  ],
+  "outputs": [
+    "table-format-commits-api-openapi.yml",
+    "table-format-configuration-api-openapi.yml",
+    "table-format-namespaces-api-openapi.yml",
+    "table-format-oauth2-api-openapi.yml",
+    "table-format-tables-api-openapi.yml",
+    "table-format-views-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
