@@ -35,7 +35,7 @@ tags:
 url: https://raw.githubusercontent.com/api-evangelist/table-format/refs/heads/main/apis.yml
 created: '2025'
 modified: '2026-05-19'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: table-format:delta-lake
   name: Delta Lake
