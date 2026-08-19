@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Apache Iceberg REST Catalog Commits Configuration API",
+    "version": "0.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Configuration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Catalog Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{catalog-host}/v1/config",
+            "params": [
+              {
+                "name": "warehouse",
+                "value": "",
+                "type": "query",
+                "description": "Warehouse identifier for multi-tenant catalogs"
+              }
+            ]
+          },
+          "docs": "Returns configuration properties for the catalog and default table properties, plus catalog-level overrides. Used during client initialization to discover catalog configuration."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

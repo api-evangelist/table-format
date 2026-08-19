@@ -1,0 +1,114 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Apache Iceberg REST Catalog Commits Views API",
+    "version": "0.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Views",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Views",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{catalog-host}/v1/namespaces/:namespace/views",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "Namespace identifier (can be multi-level with ASCII unit separator)"
+              }
+            ]
+          },
+          "docs": "List all views in a namespace."
+        },
+        {
+          "info": {
+            "name": "Create View",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{catalog-host}/v1/namespaces/:namespace/views",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "Namespace identifier (can be multi-level with ASCII unit separator)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new Iceberg view in the namespace."
+        },
+        {
+          "info": {
+            "name": "Load View",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{catalog-host}/v1/namespaces/:namespace/views/:view",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "Namespace identifier (can be multi-level with ASCII unit separator)"
+              },
+              {
+                "name": "view",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Load a view from the catalog."
+        },
+        {
+          "info": {
+            "name": "Drop View",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{catalog-host}/v1/namespaces/:namespace/views/:view",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "Namespace identifier (can be multi-level with ASCII unit separator)"
+              },
+              {
+                "name": "view",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Drop a view from the catalog."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

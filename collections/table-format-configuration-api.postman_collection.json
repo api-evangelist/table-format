@@ -1,0 +1,268 @@
+{
+  "item": [
+    {
+      "id": "57d71bf5-ae99-4176-a0a4-6e2eefdea53b",
+      "name": "Configuration",
+      "description": {
+        "content": "Catalog configuration and discovery",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c67faf69-cf55-409c-92f9-6a883a0a21d3",
+          "name": "Get Catalog Configuration",
+          "request": {
+            "name": "Get Catalog Configuration",
+            "description": {
+              "content": "Returns configuration properties for the catalog and default table properties, plus catalog-level overrides. Used during client initialization to discover catalog configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "config"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "warehouse",
+                  "value": "<string>",
+                  "description": "Warehouse identifier for multi-tenant catalogs"
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Hostname and port of the Iceberg REST catalog service",
+                  "type": "any",
+                  "value": "{{catalog-host}}",
+                  "key": "catalog-host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6d415eaf-1950-4f77-a531-518025d86fec",
+              "name": "Catalog configuration",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "warehouse",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"defaults\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  },\n  \"overrides\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9b7e98b5-283c-4007-9d7e-c2c011008107",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "warehouse",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": 6353\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a6ad80a2-61c7-4a51-b389-48e6cf5b3e42",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "warehouse",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": 6353\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Hostname and port of the Iceberg REST catalog service",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:8181",
+      "key": "catalog-host"
+    },
+    {
+      "type": "string",
+      "value": "https://{{catalog-host}}",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "56804189-507b-404f-b62f-b3a10625217c",
+    "name": "Apache Iceberg REST Catalog Commits Configuration API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Apache Iceberg REST Catalog API is an open standard (OpenAPI spec) for interacting with Apache Iceberg table catalogs. It provides a common HTTP interface for catalog operations including namespace management, table lifecycle, view management, and metadata operations. Multiple catalog implementations support this specification including Apache Polaris, Project Nessie, AWS Glue, and Google BigLake.\n\nContact Support:\n Name: Apache Iceberg Community",
+      "type": "text/plain"
+    }
+  }
+}

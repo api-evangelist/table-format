@@ -1,0 +1,196 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Apache Iceberg REST Catalog Commits Tables API",
+    "version": "0.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tables",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Tables",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{catalog-host}/v1/namespaces/:namespace/tables",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "Namespace identifier (can be multi-level with ASCII unit separator)"
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all tables in a namespace."
+        },
+        {
+          "info": {
+            "name": "Create Table",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{catalog-host}/v1/namespaces/:namespace/tables",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "Namespace identifier (can be multi-level with ASCII unit separator)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new Iceberg table in the given namespace."
+        },
+        {
+          "info": {
+            "name": "Load Table",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{catalog-host}/v1/namespaces/:namespace/tables/:table",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "Namespace identifier (can be multi-level with ASCII unit separator)"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "path",
+                "description": "Table name"
+              },
+              {
+                "name": "snapshots",
+                "value": "",
+                "type": "query",
+                "description": "Which snapshots to return (all, refs, or none)"
+              }
+            ]
+          },
+          "docs": "Load a table from the catalog, returning metadata and a token for updates."
+        },
+        {
+          "info": {
+            "name": "Commit Table Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{catalog-host}/v1/namespaces/:namespace/tables/:table",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "Namespace identifier (can be multi-level with ASCII unit separator)"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "path",
+                "description": "Table name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Commit a set of table requirement assertions and metadata updates atomically."
+        },
+        {
+          "info": {
+            "name": "Drop Table",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{catalog-host}/v1/namespaces/:namespace/tables/:table",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "Namespace identifier (can be multi-level with ASCII unit separator)"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "path",
+                "description": "Table name"
+              },
+              {
+                "name": "purgeRequested",
+                "value": "",
+                "type": "query",
+                "description": "Whether to purge table data files"
+              }
+            ]
+          },
+          "docs": "Drop a table from the catalog. Optionally purge the data files."
+        },
+        {
+          "info": {
+            "name": "Report Table Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{catalog-host}/v1/namespaces/:namespace/tables/:table/metrics",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "Namespace identifier (can be multi-level with ASCII unit separator)"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "path",
+                "description": "Table name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send scan metrics and commit metrics to the catalog for observability."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

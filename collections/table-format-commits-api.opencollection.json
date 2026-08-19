@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Apache Iceberg REST Catalog Commits API",
+    "version": "0.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Commits",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Commit Multi-Table Transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{catalog-host}/v1/transactions/commit",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Atomically commit updates to multiple tables in a single transaction."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

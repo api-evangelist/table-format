@@ -1,0 +1,129 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Apache Iceberg REST Catalog Commits Namespaces API",
+    "version": "0.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Namespaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Namespaces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{catalog-host}/v1/namespaces",
+            "params": [
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Parent namespace (for nested namespaces)"
+              },
+              {
+                "name": "pageToken",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all namespaces. A namespace is a container for tables, analogous to a database or schema."
+        },
+        {
+          "info": {
+            "name": "Create Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{catalog-host}/v1/namespaces",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new namespace with optional properties."
+        },
+        {
+          "info": {
+            "name": "Get Namespace Metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{catalog-host}/v1/namespaces/:namespace",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "Namespace identifier (can be multi-level with ASCII unit separator)"
+              }
+            ]
+          },
+          "docs": "Load metadata properties for a namespace."
+        },
+        {
+          "info": {
+            "name": "Drop Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{catalog-host}/v1/namespaces/:namespace",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "Namespace identifier (can be multi-level with ASCII unit separator)"
+              }
+            ]
+          },
+          "docs": "Drop a namespace. The namespace must be empty."
+        },
+        {
+          "info": {
+            "name": "Update Namespace Properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{catalog-host}/v1/namespaces/:namespace/properties",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "path",
+                "description": "Namespace identifier (can be multi-level with ASCII unit separator)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set or remove namespace properties."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

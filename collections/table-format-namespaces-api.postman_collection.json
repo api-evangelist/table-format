@@ -1,0 +1,879 @@
+{
+  "item": [
+    {
+      "id": "d63afba2-4eef-4afb-8757-5e8ed62dbfdd",
+      "name": "Namespaces",
+      "description": {
+        "content": "Namespace (database/schema) management",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d1380ca3-2e6a-45ad-832d-68192700235d",
+          "name": "List Namespaces",
+          "request": {
+            "name": "List Namespaces",
+            "description": {
+              "content": "List all namespaces. A namespace is a container for tables, analogous to a database or schema.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "namespaces"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "parent",
+                  "value": "<string>",
+                  "description": "Parent namespace (for nested namespaces)"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageToken",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Hostname and port of the Iceberg REST catalog service",
+                  "type": "any",
+                  "value": "{{catalog-host}}",
+                  "key": "catalog-host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "84ef980a-29b3-4645-beeb-4c601870d314",
+              "name": "List of namespaces",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageToken",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"namespaces\": [\n    [\n      \"string\",\n      \"string\"\n    ],\n    [\n      \"string\",\n      \"string\"\n    ]\n  ],\n  \"next-page-token\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c5b03f82-dfed-452d-83c2-7455a1a893d9",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "parent",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageToken",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": 3611\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "480f1528-e1d8-41b2-b65e-323aa16a96c1",
+          "name": "Create Namespace",
+          "request": {
+            "name": "Create Namespace",
+            "description": {
+              "content": "Create a new namespace with optional properties.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "namespaces"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Hostname and port of the Iceberg REST catalog service",
+                  "type": "any",
+                  "value": "{{catalog-host}}",
+                  "key": "catalog-host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"namespace\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"properties\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ce861c2d-79d5-4f80-9ed1-f9b926a01c3d",
+              "name": "Namespace created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"namespace\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"properties\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"namespace\": [\n    \"string\",\n    \"string\"\n  ],\n  \"properties\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f90d6cb-6d55-4041-a47d-a4e8696d79ab",
+              "name": "Commit conflict or resource already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"namespace\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"properties\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": 3611\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f07d5013-489b-4ad7-a262-7e5634ae4219",
+          "name": "Get Namespace Metadata",
+          "request": {
+            "name": "Get Namespace Metadata",
+            "description": {
+              "content": "Load metadata properties for a namespace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "namespaces",
+                ":namespace"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                },
+                {
+                  "description": "Hostname and port of the Iceberg REST catalog service",
+                  "type": "any",
+                  "value": "{{catalog-host}}",
+                  "key": "catalog-host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "44e01705-4876-46ee-a526-44d85ff8750c",
+              "name": "Namespace metadata",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"namespace\": [\n    \"string\",\n    \"string\"\n  ],\n  \"properties\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1028834c-2ef3-4bf7-9877-feee50e8010a",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": 3611\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cea34a3c-c924-47f4-a37a-49056d3ab14b",
+          "name": "Drop Namespace",
+          "request": {
+            "name": "Drop Namespace",
+            "description": {
+              "content": "Drop a namespace. The namespace must be empty.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "namespaces",
+                ":namespace"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                },
+                {
+                  "description": "Hostname and port of the Iceberg REST catalog service",
+                  "type": "any",
+                  "value": "{{catalog-host}}",
+                  "key": "catalog-host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "350186c3-5ab2-4db9-b7be-5a95592a2ba1",
+              "name": "Namespace dropped",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fa44af7f-705c-4e7f-b536-bbb1c7b7f55f",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": 3611\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ecd9b541-f66c-4e5c-af2d-f6cce8b939ca",
+          "name": "Update Namespace Properties",
+          "request": {
+            "name": "Update Namespace Properties",
+            "description": {
+              "content": "Set or remove namespace properties.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "namespaces",
+                ":namespace",
+                "properties"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                },
+                {
+                  "description": "Hostname and port of the Iceberg REST catalog service",
+                  "type": "any",
+                  "value": "{{catalog-host}}",
+                  "key": "catalog-host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"removals\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"updates\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "433a94cd-9950-416c-bdfc-8d0307cbbf75",
+              "name": "Properties updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace",
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"removals\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"updates\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"updated\": [\n    \"string\",\n    \"string\"\n  ],\n  \"removed\": [\n    \"string\",\n    \"string\"\n  ],\n  \"missing\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Hostname and port of the Iceberg REST catalog service",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:8181",
+      "key": "catalog-host"
+    },
+    {
+      "type": "string",
+      "value": "https://{{catalog-host}}",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "5fc7e379-5d18-40ab-8c7f-626ac29be37b",
+    "name": "Apache Iceberg REST Catalog Commits Namespaces API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Apache Iceberg REST Catalog API is an open standard (OpenAPI spec) for interacting with Apache Iceberg table catalogs. It provides a common HTTP interface for catalog operations including namespace management, table lifecycle, view management, and metadata operations. Multiple catalog implementations support this specification including Apache Polaris, Project Nessie, AWS Glue, and Google BigLake.\n\nContact Support:\n Name: Apache Iceberg Community",
+      "type": "text/plain"
+    }
+  }
+}

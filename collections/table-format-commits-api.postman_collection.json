@@ -1,0 +1,223 @@
+{
+  "item": [
+    {
+      "id": "befc1e74-e1ba-4b83-a8a7-db409fe46bf8",
+      "name": "Commits",
+      "description": {
+        "content": "Transaction commits and metadata updates",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9aca430d-963e-45fa-a8f2-cb7f487c33ac",
+          "name": "Commit Multi-Table Transaction",
+          "request": {
+            "name": "Commit Multi-Table Transaction",
+            "description": {
+              "content": "Atomically commit updates to multiple tables in a single transaction.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "transactions",
+                "commit"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Hostname and port of the Iceberg REST catalog service",
+                  "type": "any",
+                  "value": "{{catalog-host}}",
+                  "key": "catalog-host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"table-changes\": [\n    {\n      \"requirements\": [\n        \"<object>\",\n        \"<object>\"\n      ],\n      \"updates\": [\n        \"<object>\",\n        \"<object>\"\n      ],\n      \"identifier\": {\n        \"namespace\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": \"<string>\"\n      }\n    },\n    {\n      \"requirements\": [\n        \"<object>\",\n        \"<object>\"\n      ],\n      \"updates\": [\n        \"<object>\",\n        \"<object>\"\n      ],\n      \"identifier\": {\n        \"namespace\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": \"<string>\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fac20139-5806-4f0b-a146-c4b146bcd476",
+              "name": "Transaction committed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transactions",
+                    "commit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"table-changes\": [\n    {\n      \"requirements\": [\n        \"<object>\",\n        \"<object>\"\n      ],\n      \"updates\": [\n        \"<object>\",\n        \"<object>\"\n      ],\n      \"identifier\": {\n        \"namespace\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": \"<string>\"\n      }\n    },\n    {\n      \"requirements\": [\n        \"<object>\",\n        \"<object>\"\n      ],\n      \"updates\": [\n        \"<object>\",\n        \"<object>\"\n      ],\n      \"identifier\": {\n        \"namespace\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": \"<string>\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "203ee0db-421f-4307-82e8-4f93811536f3",
+              "name": "Commit conflict or resource already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transactions",
+                    "commit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"table-changes\": [\n    {\n      \"requirements\": [\n        \"<object>\",\n        \"<object>\"\n      ],\n      \"updates\": [\n        \"<object>\",\n        \"<object>\"\n      ],\n      \"identifier\": {\n        \"namespace\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": \"<string>\"\n      }\n    },\n    {\n      \"requirements\": [\n        \"<object>\",\n        \"<object>\"\n      ],\n      \"updates\": [\n        \"<object>\",\n        \"<object>\"\n      ],\n      \"identifier\": {\n        \"namespace\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": \"<string>\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": 7142\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Hostname and port of the Iceberg REST catalog service",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:8181",
+      "key": "catalog-host"
+    },
+    {
+      "type": "string",
+      "value": "https://{{catalog-host}}",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "55080c52-127b-49ba-9386-bac525011c5c",
+    "name": "Apache Iceberg REST Catalog Commits API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Apache Iceberg REST Catalog API is an open standard (OpenAPI spec) for interacting with Apache Iceberg table catalogs. It provides a common HTTP interface for catalog operations including namespace management, table lifecycle, view management, and metadata operations. Multiple catalog implementations support this specification including Apache Polaris, Project Nessie, AWS Glue, and Google BigLake.\n\nContact Support:\n Name: Apache Iceberg Community",
+      "type": "text/plain"
+    }
+  }
+}

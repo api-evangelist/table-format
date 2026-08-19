@@ -1,0 +1,1173 @@
+{
+  "item": [
+    {
+      "id": "967bcc7d-7544-4291-b302-ce2c3e8df259",
+      "name": "Tables",
+      "description": {
+        "content": "Table creation, listing, loading, and management",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d725286e-c7d3-4873-8a2d-6fce0786f5c6",
+          "name": "List Tables",
+          "request": {
+            "name": "List Tables",
+            "description": {
+              "content": "List all tables in a namespace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "namespaces",
+                ":namespace",
+                "tables"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "pageToken",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                },
+                {
+                  "description": "Hostname and port of the Iceberg REST catalog service",
+                  "type": "any",
+                  "value": "{{catalog-host}}",
+                  "key": "catalog-host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5a6868ef-9219-4a88-95ea-66d5f7307017",
+              "name": "List of tables",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace",
+                    "tables"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "pageToken",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"identifiers\": [\n    {\n      \"namespace\": [\n        \"string\",\n        \"string\"\n      ],\n      \"name\": \"string\"\n    },\n    {\n      \"namespace\": [\n        \"string\",\n        \"string\"\n      ],\n      \"name\": \"string\"\n    }\n  ],\n  \"next-page-token\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "41981bb9-23f7-4dd5-8266-22ce5762e4fb",
+          "name": "Create Table",
+          "request": {
+            "name": "Create Table",
+            "description": {
+              "content": "Create a new Iceberg table in the given namespace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "namespaces",
+                ":namespace",
+                "tables"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                },
+                {
+                  "description": "Hostname and port of the Iceberg REST catalog service",
+                  "type": "any",
+                  "value": "{{catalog-host}}",
+                  "key": "catalog-host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"schema\": {\n    \"schema-id\": \"<integer>\",\n    \"fields\": [\n      {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"required\": \"<boolean>\",\n        \"doc\": \"<string>\"\n      },\n      {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"required\": \"<boolean>\",\n        \"doc\": \"<string>\"\n      }\n    ]\n  },\n  \"location\": \"<string>\",\n  \"partition-spec\": {\n    \"spec-id\": \"<integer>\",\n    \"fields\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"write-order\": {\n    \"order-id\": \"<integer>\",\n    \"fields\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"stage-create\": \"<boolean>\",\n  \"properties\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c66e51ac-4f89-4474-9b48-640c115e34cb",
+              "name": "Table created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace",
+                    "tables"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"schema\": {\n    \"schema-id\": \"<integer>\",\n    \"fields\": [\n      {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"required\": \"<boolean>\",\n        \"doc\": \"<string>\"\n      },\n      {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"required\": \"<boolean>\",\n        \"doc\": \"<string>\"\n      }\n    ]\n  },\n  \"location\": \"<string>\",\n  \"partition-spec\": {\n    \"spec-id\": \"<integer>\",\n    \"fields\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"write-order\": {\n    \"order-id\": \"<integer>\",\n    \"fields\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"stage-create\": \"<boolean>\",\n  \"properties\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"metadata-location\": \"string\",\n  \"metadata\": {\n    \"format-version\": 3330,\n    \"table-uuid\": \"string\",\n    \"location\": \"string\",\n    \"last-updated-ms\": 4223,\n    \"current-schema-id\": 204,\n    \"schemas\": [\n      {\n        \"schema-id\": \"<integer>\",\n        \"fields\": [\n          {\n            \"id\": \"<integer>\",\n            \"name\": \"<string>\",\n            \"type\": \"<string>\",\n            \"required\": \"<boolean>\",\n            \"doc\": \"<string>\"\n          },\n          {\n            \"id\": \"<integer>\",\n            \"name\": \"<string>\",\n            \"type\": \"<string>\",\n            \"required\": \"<boolean>\",\n            \"doc\": \"<string>\"\n          }\n        ]\n      },\n      {\n        \"schema-id\": \"<integer>\",\n        \"fields\": [\n          {\n            \"id\": \"<integer>\",\n            \"name\": \"<string>\",\n            \"type\": \"<string>\",\n            \"required\": \"<boolean>\",\n            \"doc\": \"<string>\"\n          },\n          {\n            \"id\": \"<integer>\",\n            \"name\": \"<string>\",\n            \"type\": \"<string>\",\n            \"required\": \"<boolean>\",\n            \"doc\": \"<string>\"\n          }\n        ]\n      }\n    ],\n    \"default-spec-id\": 8795,\n    \"partition-specs\": [\n      {\n        \"spec-id\": \"<integer>\",\n        \"fields\": [\n          \"<object>\",\n          \"<object>\"\n        ]\n      },\n      {\n        \"spec-id\": \"<integer>\",\n        \"fields\": [\n          \"<object>\",\n          \"<object>\"\n        ]\n      }\n    ],\n    \"current-snapshot-id\": 5945,\n    \"snapshots\": [\n      {\n        \"snapshot-id\": 4082,\n        \"parent-snapshot-id\": 5434,\n        \"sequence-number\": 938,\n        \"timestamp-ms\": 7330,\n        \"manifest-list\": \"string\",\n        \"summary\": {\n          \"operation\": \"overwrite\"\n        }\n      },\n      {\n        \"snapshot-id\": 6218,\n        \"parent-snapshot-id\": 4262,\n        \"sequence-number\": 5526,\n        \"timestamp-ms\": 7113,\n        \"manifest-list\": \"string\",\n        \"summary\": {\n          \"operation\": \"replace\"\n        }\n      }\n    ],\n    \"properties\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    }\n  },\n  \"config\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a357cb3a-e049-4553-b515-1d3f5790f6de",
+              "name": "Commit conflict or resource already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace",
+                    "tables"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"schema\": {\n    \"schema-id\": \"<integer>\",\n    \"fields\": [\n      {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"required\": \"<boolean>\",\n        \"doc\": \"<string>\"\n      },\n      {\n        \"id\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"required\": \"<boolean>\",\n        \"doc\": \"<string>\"\n      }\n    ]\n  },\n  \"location\": \"<string>\",\n  \"partition-spec\": {\n    \"spec-id\": \"<integer>\",\n    \"fields\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"write-order\": {\n    \"order-id\": \"<integer>\",\n    \"fields\": [\n      \"<object>\",\n      \"<object>\"\n    ]\n  },\n  \"stage-create\": \"<boolean>\",\n  \"properties\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": 258\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cecf0c8a-bf61-465e-a423-be89d7213833",
+          "name": "Load Table",
+          "request": {
+            "name": "Load Table",
+            "description": {
+              "content": "Load a table from the catalog, returning metadata and a token for updates.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "namespaces",
+                ":namespace",
+                "tables",
+                ":table"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "snapshots",
+                  "value": "<string>",
+                  "description": "Which snapshots to return (all, refs, or none)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "table",
+                  "description": "(Required) Table name"
+                },
+                {
+                  "description": "Hostname and port of the Iceberg REST catalog service",
+                  "type": "any",
+                  "value": "{{catalog-host}}",
+                  "key": "catalog-host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "aee8ec98-26d5-4d3b-a01e-d7ce35938906",
+              "name": "Table metadata",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace",
+                    "tables",
+                    ":table"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "snapshots",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "table",
+                      "description": "(Required) Table name"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"metadata-location\": \"string\",\n  \"metadata\": {\n    \"format-version\": 2760,\n    \"table-uuid\": \"string\",\n    \"location\": \"string\",\n    \"last-updated-ms\": 2951,\n    \"current-schema-id\": 5872,\n    \"schemas\": [\n      {\n        \"schema-id\": \"<integer>\",\n        \"fields\": [\n          {\n            \"id\": \"<integer>\",\n            \"name\": \"<string>\",\n            \"type\": \"<string>\",\n            \"required\": \"<boolean>\",\n            \"doc\": \"<string>\"\n          },\n          {\n            \"id\": \"<integer>\",\n            \"name\": \"<string>\",\n            \"type\": \"<string>\",\n            \"required\": \"<boolean>\",\n            \"doc\": \"<string>\"\n          }\n        ]\n      },\n      {\n        \"schema-id\": \"<integer>\",\n        \"fields\": [\n          {\n            \"id\": \"<integer>\",\n            \"name\": \"<string>\",\n            \"type\": \"<string>\",\n            \"required\": \"<boolean>\",\n            \"doc\": \"<string>\"\n          },\n          {\n            \"id\": \"<integer>\",\n            \"name\": \"<string>\",\n            \"type\": \"<string>\",\n            \"required\": \"<boolean>\",\n            \"doc\": \"<string>\"\n          }\n        ]\n      }\n    ],\n    \"default-spec-id\": 9840,\n    \"partition-specs\": [\n      {\n        \"spec-id\": \"<integer>\",\n        \"fields\": [\n          \"<object>\",\n          \"<object>\"\n        ]\n      },\n      {\n        \"spec-id\": \"<integer>\",\n        \"fields\": [\n          \"<object>\",\n          \"<object>\"\n        ]\n      }\n    ],\n    \"current-snapshot-id\": 4807,\n    \"snapshots\": [\n      {\n        \"snapshot-id\": 8467,\n        \"parent-snapshot-id\": 4603,\n        \"sequence-number\": 4828,\n        \"timestamp-ms\": 3385,\n        \"manifest-list\": \"string\",\n        \"summary\": {\n          \"operation\": \"overwrite\"\n        }\n      },\n      {\n        \"snapshot-id\": 7401,\n        \"parent-snapshot-id\": 1137,\n        \"sequence-number\": 8107,\n        \"timestamp-ms\": 5531,\n        \"manifest-list\": \"string\",\n        \"summary\": {\n          \"operation\": \"append\"\n        }\n      }\n    ],\n    \"properties\": {\n      \"key_0\": \"string\"\n    }\n  },\n  \"config\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "95361c6a-6752-42a0-a5f3-f616d7302d5a",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace",
+                    "tables",
+                    ":table"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "snapshots",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "table",
+                      "description": "(Required) Table name"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": 258\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "84df3e2d-fa17-41dc-b3a9-b3dd319d39c8",
+          "name": "Commit Table Update",
+          "request": {
+            "name": "Commit Table Update",
+            "description": {
+              "content": "Commit a set of table requirement assertions and metadata updates atomically.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "namespaces",
+                ":namespace",
+                "tables",
+                ":table"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "table",
+                  "description": "(Required) Table name"
+                },
+                {
+                  "description": "Hostname and port of the Iceberg REST catalog service",
+                  "type": "any",
+                  "value": "{{catalog-host}}",
+                  "key": "catalog-host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requirements\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"updates\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"identifier\": {\n    \"namespace\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"name\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "55704e5b-2e77-4157-a2cc-75e999022e6c",
+              "name": "Commit applied",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace",
+                    "tables",
+                    ":table"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "table",
+                      "description": "(Required) Table name"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"requirements\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"updates\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"identifier\": {\n    \"namespace\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"metadata-location\": \"string\",\n  \"metadata\": {\n    \"format-version\": 6472,\n    \"table-uuid\": \"string\",\n    \"location\": \"string\",\n    \"last-updated-ms\": 4162,\n    \"current-schema-id\": 7155,\n    \"schemas\": [\n      {\n        \"schema-id\": \"<integer>\",\n        \"fields\": [\n          {\n            \"id\": \"<integer>\",\n            \"name\": \"<string>\",\n            \"type\": \"<string>\",\n            \"required\": \"<boolean>\",\n            \"doc\": \"<string>\"\n          },\n          {\n            \"id\": \"<integer>\",\n            \"name\": \"<string>\",\n            \"type\": \"<string>\",\n            \"required\": \"<boolean>\",\n            \"doc\": \"<string>\"\n          }\n        ]\n      },\n      {\n        \"schema-id\": \"<integer>\",\n        \"fields\": [\n          {\n            \"id\": \"<integer>\",\n            \"name\": \"<string>\",\n            \"type\": \"<string>\",\n            \"required\": \"<boolean>\",\n            \"doc\": \"<string>\"\n          },\n          {\n            \"id\": \"<integer>\",\n            \"name\": \"<string>\",\n            \"type\": \"<string>\",\n            \"required\": \"<boolean>\",\n            \"doc\": \"<string>\"\n          }\n        ]\n      }\n    ],\n    \"default-spec-id\": 2892,\n    \"partition-specs\": [\n      {\n        \"spec-id\": \"<integer>\",\n        \"fields\": [\n          \"<object>\",\n          \"<object>\"\n        ]\n      },\n      {\n        \"spec-id\": \"<integer>\",\n        \"fields\": [\n          \"<object>\",\n          \"<object>\"\n        ]\n      }\n    ],\n    \"current-snapshot-id\": 9666,\n    \"snapshots\": [\n      {\n        \"snapshot-id\": 6717,\n        \"parent-snapshot-id\": 6778,\n        \"sequence-number\": 4780,\n        \"timestamp-ms\": 3865,\n        \"manifest-list\": \"string\",\n        \"summary\": {\n          \"operation\": \"overwrite\"\n        }\n      },\n      {\n        \"snapshot-id\": 9599,\n        \"parent-snapshot-id\": 3027,\n        \"sequence-number\": 3664,\n        \"timestamp-ms\": 4263,\n        \"manifest-list\": \"string\",\n        \"summary\": {\n          \"operation\": \"overwrite\"\n        }\n      }\n    ],\n    \"properties\": {\n      \"key_0\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fefecc3c-93eb-423d-acad-b3a46308bda4",
+              "name": "Commit conflict or resource already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace",
+                    "tables",
+                    ":table"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "table",
+                      "description": "(Required) Table name"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"requirements\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"updates\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"identifier\": {\n    \"namespace\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": 258\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "39c7ffc4-73e9-4a3a-b974-c5c81610b5a5",
+          "name": "Drop Table",
+          "request": {
+            "name": "Drop Table",
+            "description": {
+              "content": "Drop a table from the catalog. Optionally purge the data files.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "namespaces",
+                ":namespace",
+                "tables",
+                ":table"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "purgeRequested",
+                  "value": "false",
+                  "description": "Whether to purge table data files"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "table",
+                  "description": "(Required) Table name"
+                },
+                {
+                  "description": "Hostname and port of the Iceberg REST catalog service",
+                  "type": "any",
+                  "value": "{{catalog-host}}",
+                  "key": "catalog-host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2fc0d27c-33a3-4771-98f2-d0ff44e13ec5",
+              "name": "Table dropped",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace",
+                    "tables",
+                    ":table"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purgeRequested",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "table",
+                      "description": "(Required) Table name"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "29b3f098-43bb-47e8-92ce-daeeabea3893",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace",
+                    "tables",
+                    ":table"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purgeRequested",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "table",
+                      "description": "(Required) Table name"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": 258\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1fc639b2-af41-41df-9c38-f928fbb93634",
+          "name": "Report Table Metrics",
+          "request": {
+            "name": "Report Table Metrics",
+            "description": {
+              "content": "Send scan metrics and commit metrics to the catalog for observability.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "namespaces",
+                ":namespace",
+                "tables",
+                ":table",
+                "metrics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "table",
+                  "description": "(Required) Table name"
+                },
+                {
+                  "description": "Hostname and port of the Iceberg REST catalog service",
+                  "type": "any",
+                  "value": "{{catalog-host}}",
+                  "key": "catalog-host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"report-type\": \"<string>\",\n  \"metrics\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "293b8bc8-fdc3-4b08-8668-0dc0ab4c248b",
+              "name": "Metrics reported",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "namespaces",
+                    ":namespace",
+                    "tables",
+                    ":table",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace identifier (can be multi-level with ASCII unit separator)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "table",
+                      "description": "(Required) Table name"
+                    },
+                    {
+                      "description": "Hostname and port of the Iceberg REST catalog service",
+                      "type": "any",
+                      "value": "{{catalog-host}}",
+                      "key": "catalog-host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"report-type\": \"<string>\",\n  \"metrics\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Hostname and port of the Iceberg REST catalog service",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost:8181",
+      "key": "catalog-host"
+    },
+    {
+      "type": "string",
+      "value": "https://{{catalog-host}}",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "90dd70a8-06fa-46a8-8e9f-6011ceb76970",
+    "name": "Apache Iceberg REST Catalog Commits Tables API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Apache Iceberg REST Catalog API is an open standard (OpenAPI spec) for interacting with Apache Iceberg table catalogs. It provides a common HTTP interface for catalog operations including namespace management, table lifecycle, view management, and metadata operations. Multiple catalog implementations support this specification including Apache Polaris, Project Nessie, AWS Glue, and Google BigLake.\n\nContact Support:\n Name: Apache Iceberg Community",
+      "type": "text/plain"
+    }
+  }
+}
