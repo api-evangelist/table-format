@@ -133,6 +133,8 @@ apis:
   humanURL: https://iceberg.apache.org/rest-catalog-spec/
   baseURL: https://catalog-service/
   tags:
+  - Authentication
+  tags_raw:
   - OAuth2
   properties:
   - type: OpenAPI
