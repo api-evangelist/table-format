@@ -8,6 +8,17 @@ description: >-
   efficient query planning to data lake storage. Apache Iceberg defines a REST Catalog API (OpenAPI spec) that enables
   standardized catalog operations across implementations like Polaris, Nessie, AWS Glue, and Google BigLake.
 type: Index
+deliveryModel:
+  model: unknown
+  open_source: false
+  commercial: false
+  callable_host: false
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
