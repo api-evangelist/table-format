@@ -77,6 +77,11 @@ apis:
   tags:
   - Apache Hudi
   - Data Lake
+  - Change Data Capture
+  - Incremental Processing
+  tags_raw:
+  - Apache Hudi
+  - Data Lake
   - CDC
   - Incremental Processing
   properties:
@@ -138,26 +143,6 @@ apis:
     url: https://www.unitycatalog.io/
   - type: GitHub
     url: https://github.com/unitycatalog/unitycatalog
-- aid: table-format:table-format-oauth2-api
-  name: Table Format OAuth2 API
-  description: OAuth2 token management
-  humanURL: https://iceberg.apache.org/rest-catalog-spec/
-  baseURL: https://catalog-service/
-  tags:
-  - Authentication
-  tags_raw:
-  - OAuth2
-  properties:
-  - type: OpenAPI
-    url: openapi/table-format-oauth2-api-openapi.yml
-  - type: Documentation
-    url: https://iceberg.apache.org/rest-catalog-spec/
-  - type: GitHub
-    url: https://github.com/apache/iceberg
-  - type: Documentation
-    url: https://www.unitycatalog.io/
-  - type: GitHub
-    url: https://github.com/unitycatalog/unitycatalog
 - aid: table-format:table-format-tables-api
   name: Table Format Tables API
   description: Table creation, listing, loading, and management
@@ -186,6 +171,24 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/table-format-views-api-openapi.yml
+  - type: Documentation
+    url: https://iceberg.apache.org/rest-catalog-spec/
+  - type: GitHub
+    url: https://github.com/apache/iceberg
+  - type: Documentation
+    url: https://www.unitycatalog.io/
+  - type: GitHub
+    url: https://github.com/unitycatalog/unitycatalog
+- aid: table-format:table-format-o-auth2-api
+  name: Table Format O Auth2 API
+  description: OAuth2 token management
+  humanURL: https://delta.io/
+  baseURL: https://catalog-service/
+  tags:
+  - O Auth2
+  properties:
+  - type: OpenAPI
+    url: openapi/table-format-o-auth2-api-openapi.yml
   - type: Documentation
     url: https://iceberg.apache.org/rest-catalog-spec/
   - type: GitHub
