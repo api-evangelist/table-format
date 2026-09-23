@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Apache Iceberg REST Catalog Commits Namespaces API
+  title: Apache Iceberg REST Catalog Namespaces API
   description: The Apache Iceberg REST Catalog API is an open standard (OpenAPI spec) for interacting with Apache Iceberg table catalogs. It provides a common HTTP interface for catalog operations including namespace management, table lifecycle, view management, and metadata operations. Multiple catalog implementations support this specification including Apache Polaris, Project Nessie, AWS Glue, and Google BigLake.
   version: 0.0.1
   contact:
@@ -144,6 +144,17 @@ components:
           type: object
           additionalProperties:
             type: string
+    ListNamespacesResponse:
+      type: object
+      properties:
+        namespaces:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        next-page-token:
+          type: string
     IcebergErrorResponse:
       type: object
       properties:
@@ -157,43 +168,6 @@ components:
             code:
               type: integer
     GetNamespaceResponse:
-      type: object
-      properties:
-        namespace:
-          type: array
-          items:
-            type: string
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-    ListNamespacesResponse:
-      type: object
-      properties:
-        namespaces:
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-        next-page-token:
-          type: string
-    UpdateNamespacePropertiesResponse:
-      type: object
-      properties:
-        updated:
-          type: array
-          items:
-            type: string
-        removed:
-          type: array
-          items:
-            type: string
-        missing:
-          type: array
-          items:
-            type: string
-    CreateNamespaceResponse:
       type: object
       properties:
         namespace:
@@ -218,6 +192,32 @@ components:
           type: object
           additionalProperties:
             type: string
+    CreateNamespaceResponse:
+      type: object
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    UpdateNamespacePropertiesResponse:
+      type: object
+      properties:
+        updated:
+          type: array
+          items:
+            type: string
+        removed:
+          type: array
+          items:
+            type: string
+        missing:
+          type: array
+          items:
+            type: string
   parameters:
     NamespaceParam:
       name: namespace
@@ -227,8 +227,8 @@ components:
       schema:
         type: string
   responses:
-    NotFound:
-      description: Resource not found
+    Conflict:
+      description: Commit conflict or resource already exists
       content:
         application/json:
           schema:
@@ -239,8 +239,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IcebergErrorResponse'
-    Conflict:
-      description: Commit conflict or resource already exists
+    NotFound:
+      description: Resource not found
       content:
         application/json:
           schema:

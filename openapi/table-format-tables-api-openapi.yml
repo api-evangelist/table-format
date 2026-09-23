@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Apache Iceberg REST Catalog Commits Tables API
+  title: Apache Iceberg REST Catalog Tables API
   description: The Apache Iceberg REST Catalog API is an open standard (OpenAPI spec) for interacting with Apache Iceberg table catalogs. It provides a common HTTP interface for catalog operations including namespace management, table lifecycle, view management, and metadata operations. Multiple catalog implementations support this specification including Apache Polaris, Project Nessie, AWS Glue, and Google BigLake.
   version: 0.0.1
   contact:
@@ -167,18 +167,25 @@ paths:
           description: Metrics reported
 components:
   schemas:
-    IcebergErrorResponse:
+    ReportMetricsRequest:
       type: object
       properties:
-        error:
+        report-type:
+          type: string
+          enum:
+          - scan-report
+          - commit-report
+        metrics:
           type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: integer
+    SortOrder:
+      type: object
+      properties:
+        order-id:
+          type: integer
+        fields:
+          type: array
+          items:
+            type: object
     CreateTableRequest:
       type: object
       required:
@@ -198,94 +205,6 @@ components:
         stage-create:
           type: boolean
         properties:
-          type: object
-          additionalProperties:
-            type: string
-    ReportMetricsRequest:
-      type: object
-      properties:
-        report-type:
-          type: string
-          enum:
-          - scan-report
-          - commit-report
-        metrics:
-          type: object
-    ListTablesResponse:
-      type: object
-      properties:
-        identifiers:
-          type: array
-          items:
-            $ref: '#/components/schemas/TableIdentifier'
-        next-page-token:
-          type: string
-    StructField:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        type:
-          type: string
-        required:
-          type: boolean
-        doc:
-          type: string
-    Snapshot:
-      type: object
-      properties:
-        snapshot-id:
-          type: integer
-          format: int64
-        parent-snapshot-id:
-          type: integer
-          format: int64
-        sequence-number:
-          type: integer
-          format: int64
-        timestamp-ms:
-          type: integer
-          format: int64
-        manifest-list:
-          type: string
-        summary:
-          type: object
-          properties:
-            operation:
-              type: string
-              enum:
-              - append
-              - replace
-              - overwrite
-              - delete
-    SortOrder:
-      type: object
-      properties:
-        order-id:
-          type: integer
-        fields:
-          type: array
-          items:
-            type: object
-    TableIdentifier:
-      type: object
-      properties:
-        namespace:
-          type: array
-          items:
-            type: string
-        name:
-          type: string
-    LoadTableResult:
-      type: object
-      properties:
-        metadata-location:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/TableMetadata'
-        config:
           type: object
           additionalProperties:
             type: string
@@ -324,6 +243,25 @@ components:
           type: object
           additionalProperties:
             type: string
+    CommitTableResponse:
+      type: object
+      properties:
+        metadata-location:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/TableMetadata'
+    IcebergErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: integer
     Schema:
       type: object
       properties:
@@ -333,6 +271,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/StructField'
+    LoadTableResult:
+      type: object
+      properties:
+        metadata-location:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/TableMetadata'
+        config:
+          type: object
+          additionalProperties:
+            type: string
+    ListTablesResponse:
+      type: object
+      properties:
+        identifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/TableIdentifier'
+        next-page-token:
+          type: string
     PartitionSpec:
       type: object
       properties:
@@ -342,6 +300,28 @@ components:
           type: array
           items:
             type: object
+    TableIdentifier:
+      type: object
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+    StructField:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+        required:
+          type: boolean
+        doc:
+          type: string
     CommitTableRequest:
       type: object
       required:
@@ -358,21 +338,34 @@ components:
           type: array
           items:
             type: object
-    CommitTableResponse:
+    Snapshot:
       type: object
       properties:
-        metadata-location:
+        snapshot-id:
+          type: integer
+          format: int64
+        parent-snapshot-id:
+          type: integer
+          format: int64
+        sequence-number:
+          type: integer
+          format: int64
+        timestamp-ms:
+          type: integer
+          format: int64
+        manifest-list:
           type: string
-        metadata:
-          $ref: '#/components/schemas/TableMetadata'
+        summary:
+          type: object
+          properties:
+            operation:
+              type: string
+              enum:
+              - append
+              - replace
+              - overwrite
+              - delete
   parameters:
-    TableParam:
-      name: table
-      in: path
-      required: true
-      description: Table name
-      schema:
-        type: string
     NamespaceParam:
       name: namespace
       in: path
@@ -380,15 +373,22 @@ components:
       description: Namespace identifier (can be multi-level with ASCII unit separator)
       schema:
         type: string
+    TableParam:
+      name: table
+      in: path
+      required: true
+      description: Table name
+      schema:
+        type: string
   responses:
-    NotFound:
-      description: Resource not found
+    Conflict:
+      description: Commit conflict or resource already exists
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/IcebergErrorResponse'
-    Conflict:
-      description: Commit conflict or resource already exists
+    NotFound:
+      description: Resource not found
       content:
         application/json:
           schema:

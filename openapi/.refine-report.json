@@ -1,12 +1,7 @@
 {
   "provider": "table-format",
   "sources": [
-    "table-format-commits-api-openapi.yml",
-    "table-format-configuration-api-openapi.yml",
-    "table-format-namespaces-api-openapi.yml",
-    "table-format-oauth2-api-openapi.yml",
-    "table-format-tables-api-openapi.yml",
-    "table-format-views-api-openapi.yml"
+    "_original/apache-iceberg-rest-catalog-openapi.yml"
   ],
   "outputs": [
     "table-format-commits-api-openapi.yml",
@@ -16,9 +11,23 @@
     "table-format-tables-api-openapi.yml",
     "table-format-views-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "apache-iceberg-rest-catalog-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "superseded outputs removed: table-format-o-auth2-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 8 total)"
+  ],
+  "skipped": [
+    "table-format-commits-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "table-format-configuration-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "table-format-namespaces-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "table-format-o-auth2-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "table-format-tables-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "table-format-views-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

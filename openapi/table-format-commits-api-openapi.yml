@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Apache Iceberg REST Catalog Commits API
   description: The Apache Iceberg REST Catalog API is an open standard (OpenAPI spec) for interacting with Apache Iceberg table catalogs. It provides a common HTTP interface for catalog operations including namespace management, table lifecycle, view management, and metadata operations. Multiple catalog implementations support this specification including Apache Polaris, Project Nessie, AWS Glue, and Google BigLake.
@@ -43,6 +43,13 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
 components:
+  responses:
+    Conflict:
+      description: Commit conflict or resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IcebergErrorResponse'
   schemas:
     IcebergErrorResponse:
       type: object
@@ -56,15 +63,6 @@ components:
               type: string
             code:
               type: integer
-    CommitTransactionRequest:
-      type: object
-      required:
-      - table-changes
-      properties:
-        table-changes:
-          type: array
-          items:
-            $ref: '#/components/schemas/CommitTableRequest'
     TableIdentifier:
       type: object
       properties:
@@ -74,6 +72,15 @@ components:
             type: string
         name:
           type: string
+    CommitTransactionRequest:
+      type: object
+      required:
+      - table-changes
+      properties:
+        table-changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommitTableRequest'
     CommitTableRequest:
       type: object
       required:
@@ -90,13 +97,6 @@ components:
           type: array
           items:
             type: object
-  responses:
-    Conflict:
-      description: Commit conflict or resource already exists
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/IcebergErrorResponse'
   securitySchemes:
     BearerAuth:
       type: http

@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Apache Iceberg REST Catalog Commits Views API
+  title: Apache Iceberg REST Catalog Views API
   description: The Apache Iceberg REST Catalog API is an open standard (OpenAPI spec) for interacting with Apache Iceberg table catalogs. It provides a common HTTP interface for catalog operations including namespace management, table lifecycle, view management, and metadata operations. Multiple catalog implementations support this specification including Apache Polaris, Project Nessie, AWS Glue, and Google BigLake.
   version: 0.0.1
   contact:
@@ -101,14 +101,15 @@ paths:
         '204':
           description: View dropped
 components:
+  parameters:
+    NamespaceParam:
+      name: namespace
+      in: path
+      required: true
+      description: Namespace identifier (can be multi-level with ASCII unit separator)
+      schema:
+        type: string
   schemas:
-    LoadViewResult:
-      type: object
-      properties:
-        metadata-location:
-          type: string
-        metadata:
-          type: object
     IcebergErrorResponse:
       type: object
       properties:
@@ -121,6 +122,15 @@ components:
               type: string
             code:
               type: integer
+    Schema:
+      type: object
+      properties:
+        schema-id:
+          type: integer
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructField'
     ListTablesResponse:
       type: object
       properties:
@@ -129,19 +139,6 @@ components:
           items:
             $ref: '#/components/schemas/TableIdentifier'
         next-page-token:
-          type: string
-    StructField:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        type:
-          type: string
-        required:
-          type: boolean
-        doc:
           type: string
     CreateViewRequest:
       type: object
@@ -171,15 +168,26 @@ components:
             type: string
         name:
           type: string
-    Schema:
+    StructField:
       type: object
       properties:
-        schema-id:
+        id:
           type: integer
-        fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/StructField'
+        name:
+          type: string
+        type:
+          type: string
+        required:
+          type: boolean
+        doc:
+          type: string
+    LoadViewResult:
+      type: object
+      properties:
+        metadata-location:
+          type: string
+        metadata:
+          type: object
   responses:
     NotFound:
       description: Resource not found
@@ -187,14 +195,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IcebergErrorResponse'
-  parameters:
-    NamespaceParam:
-      name: namespace
-      in: path
-      required: true
-      description: Namespace identifier (can be multi-level with ASCII unit separator)
-      schema:
-        type: string
   securitySchemes:
     BearerAuth:
       type: http
