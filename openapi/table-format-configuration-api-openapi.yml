@@ -51,6 +51,18 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   schemas:
+    IcebergErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: integer
     CatalogConfig:
       type: object
       properties:
@@ -64,27 +76,15 @@ components:
           additionalProperties:
             type: string
           description: Catalog-level overrides
-    IcebergErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: integer
   responses:
-    Forbidden:
-      description: Insufficient permissions
+    Unauthorized:
+      description: Authentication required
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/IcebergErrorResponse'
-    Unauthorized:
-      description: Authentication required
+    Forbidden:
+      description: Insufficient permissions
       content:
         application/json:
           schema:

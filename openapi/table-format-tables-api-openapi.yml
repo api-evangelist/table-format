@@ -166,48 +166,38 @@ paths:
         '204':
           description: Metrics reported
 components:
+  parameters:
+    TableParam:
+      name: table
+      in: path
+      required: true
+      description: Table name
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: path
+      required: true
+      description: Namespace identifier (can be multi-level with ASCII unit separator)
+      schema:
+        type: string
   schemas:
-    ReportMetricsRequest:
+    CommitTableRequest:
       type: object
+      required:
+      - requirements
+      - updates
       properties:
-        report-type:
-          type: string
-          enum:
-          - scan-report
-          - commit-report
-        metrics:
-          type: object
-    SortOrder:
-      type: object
-      properties:
-        order-id:
-          type: integer
-        fields:
+        identifier:
+          $ref: '#/components/schemas/TableIdentifier'
+        requirements:
           type: array
           items:
             type: object
-    CreateTableRequest:
-      type: object
-      required:
-      - name
-      - schema
-      properties:
-        name:
-          type: string
-        location:
-          type: string
-        schema:
-          $ref: '#/components/schemas/Schema'
-        partition-spec:
-          $ref: '#/components/schemas/PartitionSpec'
-        write-order:
-          $ref: '#/components/schemas/SortOrder'
-        stage-create:
-          type: boolean
-        properties:
-          type: object
-          additionalProperties:
-            type: string
+        updates:
+          type: array
+          items:
+            type: object
     TableMetadata:
       type: object
       properties:
@@ -243,54 +233,6 @@ components:
           type: object
           additionalProperties:
             type: string
-    CommitTableResponse:
-      type: object
-      properties:
-        metadata-location:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/TableMetadata'
-    IcebergErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: integer
-    Schema:
-      type: object
-      properties:
-        schema-id:
-          type: integer
-        fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/StructField'
-    LoadTableResult:
-      type: object
-      properties:
-        metadata-location:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/TableMetadata'
-        config:
-          type: object
-          additionalProperties:
-            type: string
-    ListTablesResponse:
-      type: object
-      properties:
-        identifiers:
-          type: array
-          items:
-            $ref: '#/components/schemas/TableIdentifier'
-        next-page-token:
-          type: string
     PartitionSpec:
       type: object
       properties:
@@ -300,14 +242,14 @@ components:
           type: array
           items:
             type: object
-    TableIdentifier:
+    ListTablesResponse:
       type: object
       properties:
-        namespace:
+        identifiers:
           type: array
           items:
-            type: string
-        name:
+            $ref: '#/components/schemas/TableIdentifier'
+        next-page-token:
           type: string
     StructField:
       type: object
@@ -322,22 +264,6 @@ components:
           type: boolean
         doc:
           type: string
-    CommitTableRequest:
-      type: object
-      required:
-      - requirements
-      - updates
-      properties:
-        identifier:
-          $ref: '#/components/schemas/TableIdentifier'
-        requirements:
-          type: array
-          items:
-            type: object
-        updates:
-          type: array
-          items:
-            type: object
     Snapshot:
       type: object
       properties:
@@ -365,21 +291,95 @@ components:
               - replace
               - overwrite
               - delete
-  parameters:
-    NamespaceParam:
-      name: namespace
-      in: path
-      required: true
-      description: Namespace identifier (can be multi-level with ASCII unit separator)
-      schema:
-        type: string
-    TableParam:
-      name: table
-      in: path
-      required: true
-      description: Table name
-      schema:
-        type: string
+    Schema:
+      type: object
+      properties:
+        schema-id:
+          type: integer
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructField'
+    ReportMetricsRequest:
+      type: object
+      properties:
+        report-type:
+          type: string
+          enum:
+          - scan-report
+          - commit-report
+        metrics:
+          type: object
+    IcebergErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: integer
+    LoadTableResult:
+      type: object
+      properties:
+        metadata-location:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/TableMetadata'
+        config:
+          type: object
+          additionalProperties:
+            type: string
+    CommitTableResponse:
+      type: object
+      properties:
+        metadata-location:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/TableMetadata'
+    CreateTableRequest:
+      type: object
+      required:
+      - name
+      - schema
+      properties:
+        name:
+          type: string
+        location:
+          type: string
+        schema:
+          $ref: '#/components/schemas/Schema'
+        partition-spec:
+          $ref: '#/components/schemas/PartitionSpec'
+        write-order:
+          $ref: '#/components/schemas/SortOrder'
+        stage-create:
+          type: boolean
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    SortOrder:
+      type: object
+      properties:
+        order-id:
+          type: integer
+        fields:
+          type: array
+          items:
+            type: object
+    TableIdentifier:
+      type: object
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
   responses:
     Conflict:
       description: Commit conflict or resource already exists

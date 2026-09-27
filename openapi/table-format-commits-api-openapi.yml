@@ -43,44 +43,7 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
 components:
-  responses:
-    Conflict:
-      description: Commit conflict or resource already exists
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/IcebergErrorResponse'
   schemas:
-    IcebergErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: integer
-    TableIdentifier:
-      type: object
-      properties:
-        namespace:
-          type: array
-          items:
-            type: string
-        name:
-          type: string
-    CommitTransactionRequest:
-      type: object
-      required:
-      - table-changes
-      properties:
-        table-changes:
-          type: array
-          items:
-            $ref: '#/components/schemas/CommitTableRequest'
     CommitTableRequest:
       type: object
       required:
@@ -97,6 +60,43 @@ components:
           type: array
           items:
             type: object
+    IcebergErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: integer
+    CommitTransactionRequest:
+      type: object
+      required:
+      - table-changes
+      properties:
+        table-changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommitTableRequest'
+    TableIdentifier:
+      type: object
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+  responses:
+    Conflict:
+      description: Commit conflict or resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IcebergErrorResponse'
   securitySchemes:
     BearerAuth:
       type: http

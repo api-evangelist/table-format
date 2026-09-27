@@ -10,14 +10,21 @@ description: >-
 type: Index
 deliveryModel:
   model: unknown
-  open_source: false
+  license_evidence:
+    not_product:
+    - apache/hudi
+    - apache/iceberg
+    - delta-io/delta
+    - unitycatalog/unitycatalog
+  open_source: unknown
   commercial: false
   callable_host: false
   label: Delivery model not determined — needs a product licence on record
   confidence: low
   source:
   - openapi
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: freemium
@@ -82,7 +89,7 @@ apis:
   tags_raw:
   - Apache Hudi
   - Data Lake
-  - CDC
+  - Change Data Capture
   - Incremental Processing
   properties:
   - type: Documentation

@@ -101,15 +101,38 @@ paths:
         '204':
           description: View dropped
 components:
-  parameters:
-    NamespaceParam:
-      name: namespace
-      in: path
-      required: true
-      description: Namespace identifier (can be multi-level with ASCII unit separator)
-      schema:
-        type: string
   schemas:
+    ListTablesResponse:
+      type: object
+      properties:
+        identifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/TableIdentifier'
+        next-page-token:
+          type: string
+    StructField:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+        required:
+          type: boolean
+        doc:
+          type: string
+    Schema:
+      type: object
+      properties:
+        schema-id:
+          type: integer
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructField'
     IcebergErrorResponse:
       type: object
       properties:
@@ -122,23 +145,14 @@ components:
               type: string
             code:
               type: integer
-    Schema:
+    TableIdentifier:
       type: object
       properties:
-        schema-id:
-          type: integer
-        fields:
+        namespace:
           type: array
           items:
-            $ref: '#/components/schemas/StructField'
-    ListTablesResponse:
-      type: object
-      properties:
-        identifiers:
-          type: array
-          items:
-            $ref: '#/components/schemas/TableIdentifier'
-        next-page-token:
+            type: string
+        name:
           type: string
     CreateViewRequest:
       type: object
@@ -159,28 +173,6 @@ components:
           type: object
           additionalProperties:
             type: string
-    TableIdentifier:
-      type: object
-      properties:
-        namespace:
-          type: array
-          items:
-            type: string
-        name:
-          type: string
-    StructField:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        type:
-          type: string
-        required:
-          type: boolean
-        doc:
-          type: string
     LoadViewResult:
       type: object
       properties:
@@ -195,6 +187,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IcebergErrorResponse'
+  parameters:
+    NamespaceParam:
+      name: namespace
+      in: path
+      required: true
+      description: Namespace identifier (can be multi-level with ASCII unit separator)
+      schema:
+        type: string
   securitySchemes:
     BearerAuth:
       type: http

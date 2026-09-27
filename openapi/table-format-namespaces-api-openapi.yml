@@ -133,6 +133,69 @@ paths:
                 $ref: '#/components/schemas/UpdateNamespacePropertiesResponse'
 components:
   schemas:
+    UpdateNamespacePropertiesResponse:
+      type: object
+      properties:
+        updated:
+          type: array
+          items:
+            type: string
+        removed:
+          type: array
+          items:
+            type: string
+        missing:
+          type: array
+          items:
+            type: string
+    GetNamespaceResponse:
+      type: object
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    CreateNamespaceResponse:
+      type: object
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    IcebergErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: integer
+    CreateNamespaceRequest:
+      type: object
+      required:
+      - namespace
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+          description: Namespace identifier parts (e.g., ["mydb"] or ["catalog", "schema"])
+        properties:
+          type: object
+          additionalProperties:
+            type: string
     UpdateNamespacePropertiesRequest:
       type: object
       properties:
@@ -155,86 +218,15 @@ components:
               type: string
         next-page-token:
           type: string
-    IcebergErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: integer
-    GetNamespaceResponse:
-      type: object
-      properties:
-        namespace:
-          type: array
-          items:
-            type: string
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-    CreateNamespaceRequest:
-      type: object
-      required:
-      - namespace
-      properties:
-        namespace:
-          type: array
-          items:
-            type: string
-          description: Namespace identifier parts (e.g., ["mydb"] or ["catalog", "schema"])
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-    CreateNamespaceResponse:
-      type: object
-      properties:
-        namespace:
-          type: array
-          items:
-            type: string
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-    UpdateNamespacePropertiesResponse:
-      type: object
-      properties:
-        updated:
-          type: array
-          items:
-            type: string
-        removed:
-          type: array
-          items:
-            type: string
-        missing:
-          type: array
-          items:
-            type: string
-  parameters:
-    NamespaceParam:
-      name: namespace
-      in: path
-      required: true
-      description: Namespace identifier (can be multi-level with ASCII unit separator)
-      schema:
-        type: string
   responses:
-    Conflict:
-      description: Commit conflict or resource already exists
+    Unauthorized:
+      description: Authentication required
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/IcebergErrorResponse'
-    Unauthorized:
-      description: Authentication required
+    Conflict:
+      description: Commit conflict or resource already exists
       content:
         application/json:
           schema:
@@ -245,6 +237,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IcebergErrorResponse'
+  parameters:
+    NamespaceParam:
+      name: namespace
+      in: path
+      required: true
+      description: Namespace identifier (can be multi-level with ASCII unit separator)
+      schema:
+        type: string
   securitySchemes:
     BearerAuth:
       type: http
