@@ -133,21 +133,6 @@ paths:
                 $ref: '#/components/schemas/UpdateNamespacePropertiesResponse'
 components:
   schemas:
-    UpdateNamespacePropertiesResponse:
-      type: object
-      properties:
-        updated:
-          type: array
-          items:
-            type: string
-        removed:
-          type: array
-          items:
-            type: string
-        missing:
-          type: array
-          items:
-            type: string
     GetNamespaceResponse:
       type: object
       properties:
@@ -170,18 +155,28 @@ components:
           type: object
           additionalProperties:
             type: string
-    IcebergErrorResponse:
+    ListNamespacesResponse:
       type: object
       properties:
-        error:
+        namespaces:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        next-page-token:
+          type: string
+    UpdateNamespacePropertiesRequest:
+      type: object
+      properties:
+        removals:
+          type: array
+          items:
+            type: string
+        updates:
           type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: integer
+          additionalProperties:
+            type: string
     CreateNamespaceRequest:
       type: object
       required:
@@ -196,35 +191,34 @@ components:
           type: object
           additionalProperties:
             type: string
-    UpdateNamespacePropertiesRequest:
+    UpdateNamespacePropertiesResponse:
       type: object
       properties:
-        removals:
+        updated:
           type: array
           items:
             type: string
-        updates:
+        removed:
+          type: array
+          items:
+            type: string
+        missing:
+          type: array
+          items:
+            type: string
+    IcebergErrorResponse:
+      type: object
+      properties:
+        error:
           type: object
-          additionalProperties:
-            type: string
-    ListNamespacesResponse:
-      type: object
-      properties:
-        namespaces:
-          type: array
-          items:
-            type: array
-            items:
+          properties:
+            message:
               type: string
-        next-page-token:
-          type: string
+            type:
+              type: string
+            code:
+              type: integer
   responses:
-    Unauthorized:
-      description: Authentication required
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/IcebergErrorResponse'
     Conflict:
       description: Commit conflict or resource already exists
       content:
@@ -233,6 +227,12 @@ components:
             $ref: '#/components/schemas/IcebergErrorResponse'
     NotFound:
       description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IcebergErrorResponse'
+    Unauthorized:
+      description: Authentication required
       content:
         application/json:
           schema:

@@ -77,14 +77,14 @@ components:
             type: string
           description: Catalog-level overrides
   responses:
-    Unauthorized:
-      description: Authentication required
+    Forbidden:
+      description: Insufficient permissions
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/IcebergErrorResponse'
-    Forbidden:
-      description: Insufficient permissions
+    Unauthorized:
+      description: Authentication required
       content:
         application/json:
           schema:

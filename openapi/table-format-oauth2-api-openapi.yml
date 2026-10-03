@@ -59,7 +59,25 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
 components:
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IcebergErrorResponse'
   schemas:
+    OAuthTokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+        expires_in:
+          type: integer
+        scope:
+          type: string
     IcebergErrorResponse:
       type: object
       properties:
@@ -72,24 +90,6 @@ components:
               type: string
             code:
               type: integer
-    OAuthTokenResponse:
-      type: object
-      properties:
-        access_token:
-          type: string
-        token_type:
-          type: string
-        expires_in:
-          type: integer
-        scope:
-          type: string
-  responses:
-    BadRequest:
-      description: Invalid request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/IcebergErrorResponse'
   securitySchemes:
     BearerAuth:
       type: http
