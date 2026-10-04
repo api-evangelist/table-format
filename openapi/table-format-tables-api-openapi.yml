@@ -166,108 +166,22 @@ paths:
         '204':
           description: Metrics reported
 components:
+  parameters:
+    NamespaceParam:
+      name: namespace
+      in: path
+      required: true
+      description: Namespace identifier (can be multi-level with ASCII unit separator)
+      schema:
+        type: string
+    TableParam:
+      name: table
+      in: path
+      required: true
+      description: Table name
+      schema:
+        type: string
   schemas:
-    SortOrder:
-      type: object
-      properties:
-        order-id:
-          type: integer
-        fields:
-          type: array
-          items:
-            type: object
-    LoadTableResult:
-      type: object
-      properties:
-        metadata-location:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/TableMetadata'
-        config:
-          type: object
-          additionalProperties:
-            type: string
-    Snapshot:
-      type: object
-      properties:
-        snapshot-id:
-          type: integer
-          format: int64
-        parent-snapshot-id:
-          type: integer
-          format: int64
-        sequence-number:
-          type: integer
-          format: int64
-        timestamp-ms:
-          type: integer
-          format: int64
-        manifest-list:
-          type: string
-        summary:
-          type: object
-          properties:
-            operation:
-              type: string
-              enum:
-              - append
-              - replace
-              - overwrite
-              - delete
-    Schema:
-      type: object
-      properties:
-        schema-id:
-          type: integer
-        fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/StructField'
-    TableMetadata:
-      type: object
-      properties:
-        format-version:
-          type: integer
-        table-uuid:
-          type: string
-        location:
-          type: string
-        last-updated-ms:
-          type: integer
-          format: int64
-        current-schema-id:
-          type: integer
-        schemas:
-          type: array
-          items:
-            $ref: '#/components/schemas/Schema'
-        default-spec-id:
-          type: integer
-        partition-specs:
-          type: array
-          items:
-            $ref: '#/components/schemas/PartitionSpec'
-        current-snapshot-id:
-          type: integer
-          format: int64
-        snapshots:
-          type: array
-          items:
-            $ref: '#/components/schemas/Snapshot'
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-    ReportMetricsRequest:
-      type: object
-      properties:
-        report-type:
-          type: string
-          enum:
-          - scan-report
-          - commit-report
-        metrics:
-          type: object
     CommitTableRequest:
       type: object
       required:
@@ -281,6 +195,15 @@ components:
           items:
             type: object
         updates:
+          type: array
+          items:
+            type: object
+    PartitionSpec:
+      type: object
+      properties:
+        spec-id:
+          type: integer
+        fields:
           type: array
           items:
             type: object
@@ -331,15 +254,80 @@ components:
             type: string
         name:
           type: string
-    PartitionSpec:
+    LoadTableResult:
       type: object
       properties:
-        spec-id:
+        metadata-location:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/TableMetadata'
+        config:
+          type: object
+          additionalProperties:
+            type: string
+    Schema:
+      type: object
+      properties:
+        schema-id:
+          type: integer
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructField'
+    ReportMetricsRequest:
+      type: object
+      properties:
+        report-type:
+          type: string
+          enum:
+          - scan-report
+          - commit-report
+        metrics:
+          type: object
+    SortOrder:
+      type: object
+      properties:
+        order-id:
           type: integer
         fields:
           type: array
           items:
             type: object
+    TableMetadata:
+      type: object
+      properties:
+        format-version:
+          type: integer
+        table-uuid:
+          type: string
+        location:
+          type: string
+        last-updated-ms:
+          type: integer
+          format: int64
+        current-schema-id:
+          type: integer
+        schemas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schema'
+        default-spec-id:
+          type: integer
+        partition-specs:
+          type: array
+          items:
+            $ref: '#/components/schemas/PartitionSpec'
+        current-snapshot-id:
+          type: integer
+          format: int64
+        snapshots:
+          type: array
+          items:
+            $ref: '#/components/schemas/Snapshot'
+        properties:
+          type: object
+          additionalProperties:
+            type: string
     StructField:
       type: object
       properties:
@@ -365,6 +353,33 @@ components:
               type: string
             code:
               type: integer
+    Snapshot:
+      type: object
+      properties:
+        snapshot-id:
+          type: integer
+          format: int64
+        parent-snapshot-id:
+          type: integer
+          format: int64
+        sequence-number:
+          type: integer
+          format: int64
+        timestamp-ms:
+          type: integer
+          format: int64
+        manifest-list:
+          type: string
+        summary:
+          type: object
+          properties:
+            operation:
+              type: string
+              enum:
+              - append
+              - replace
+              - overwrite
+              - delete
   responses:
     Conflict:
       description: Commit conflict or resource already exists
@@ -378,21 +393,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/IcebergErrorResponse'
-  parameters:
-    TableParam:
-      name: table
-      in: path
-      required: true
-      description: Table name
-      schema:
-        type: string
-    NamespaceParam:
-      name: namespace
-      in: path
-      required: true
-      description: Namespace identifier (can be multi-level with ASCII unit separator)
-      schema:
-        type: string
   securitySchemes:
     BearerAuth:
       type: http

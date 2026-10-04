@@ -101,47 +101,15 @@ paths:
         '204':
           description: View dropped
 components:
+  parameters:
+    NamespaceParam:
+      name: namespace
+      in: path
+      required: true
+      description: Namespace identifier (can be multi-level with ASCII unit separator)
+      schema:
+        type: string
   schemas:
-    Schema:
-      type: object
-      properties:
-        schema-id:
-          type: integer
-        fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/StructField'
-    ListTablesResponse:
-      type: object
-      properties:
-        identifiers:
-          type: array
-          items:
-            $ref: '#/components/schemas/TableIdentifier'
-        next-page-token:
-          type: string
-    StructField:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        type:
-          type: string
-        required:
-          type: boolean
-        doc:
-          type: string
-    TableIdentifier:
-      type: object
-      properties:
-        namespace:
-          type: array
-          items:
-            type: string
-        name:
-          type: string
     CreateViewRequest:
       type: object
       required:
@@ -161,6 +129,15 @@ components:
           type: object
           additionalProperties:
             type: string
+    ListTablesResponse:
+      type: object
+      properties:
+        identifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/TableIdentifier'
+        next-page-token:
+          type: string
     LoadViewResult:
       type: object
       properties:
@@ -168,6 +145,37 @@ components:
           type: string
         metadata:
           type: object
+    TableIdentifier:
+      type: object
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+    Schema:
+      type: object
+      properties:
+        schema-id:
+          type: integer
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructField'
+    StructField:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+        required:
+          type: boolean
+        doc:
+          type: string
     IcebergErrorResponse:
       type: object
       properties:
@@ -180,14 +188,6 @@ components:
               type: string
             code:
               type: integer
-  parameters:
-    NamespaceParam:
-      name: namespace
-      in: path
-      required: true
-      description: Namespace identifier (can be multi-level with ASCII unit separator)
-      schema:
-        type: string
   responses:
     NotFound:
       description: Resource not found

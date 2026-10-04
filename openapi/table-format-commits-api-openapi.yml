@@ -43,13 +43,6 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
 components:
-  responses:
-    Conflict:
-      description: Commit conflict or resource already exists
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/IcebergErrorResponse'
   schemas:
     CommitTableRequest:
       type: object
@@ -97,6 +90,13 @@ components:
               type: string
             code:
               type: integer
+  responses:
+    Conflict:
+      description: Commit conflict or resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IcebergErrorResponse'
   securitySchemes:
     BearerAuth:
       type: http
