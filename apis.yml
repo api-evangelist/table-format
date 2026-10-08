@@ -207,6 +207,12 @@ apis:
   - type: GitHub
     url: https://github.com/unitycatalog/unitycatalog
 common:
+  - type: Plans
+    url: plans/table-format-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/table-format-rate-limits.yml
+  - type: FinOps
+    url: finops/table-format-finops.yml
   - type: AgenticAccess
     url: agentic-access/table-format-agentic-access.yml
   - type: VulnerabilityDisclosure
