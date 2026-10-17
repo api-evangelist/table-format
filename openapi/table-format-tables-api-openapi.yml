@@ -166,114 +166,32 @@ paths:
         '204':
           description: Metrics reported
 components:
-  parameters:
-    NamespaceParam:
-      name: namespace
-      in: path
-      required: true
-      description: Namespace identifier (can be multi-level with ASCII unit separator)
-      schema:
-        type: string
-    TableParam:
-      name: table
-      in: path
-      required: true
-      description: Table name
-      schema:
-        type: string
   schemas:
-    CommitTableRequest:
-      type: object
-      required:
-      - requirements
-      - updates
-      properties:
-        identifier:
-          $ref: '#/components/schemas/TableIdentifier'
-        requirements:
-          type: array
-          items:
-            type: object
-        updates:
-          type: array
-          items:
-            type: object
-    PartitionSpec:
+    IcebergErrorResponse:
       type: object
       properties:
-        spec-id:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: integer
+    StructField:
+      type: object
+      properties:
+        id:
           type: integer
-        fields:
-          type: array
-          items:
-            type: object
-    ListTablesResponse:
-      type: object
-      properties:
-        identifiers:
-          type: array
-          items:
-            $ref: '#/components/schemas/TableIdentifier'
-        next-page-token:
-          type: string
-    CommitTableResponse:
-      type: object
-      properties:
-        metadata-location:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/TableMetadata'
-    CreateTableRequest:
-      type: object
-      required:
-      - name
-      - schema
-      properties:
         name:
           type: string
-        location:
+        type:
           type: string
-        schema:
-          $ref: '#/components/schemas/Schema'
-        partition-spec:
-          $ref: '#/components/schemas/PartitionSpec'
-        write-order:
-          $ref: '#/components/schemas/SortOrder'
-        stage-create:
+        required:
           type: boolean
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-    TableIdentifier:
-      type: object
-      properties:
-        namespace:
-          type: array
-          items:
-            type: string
-        name:
+        doc:
           type: string
-    LoadTableResult:
-      type: object
-      properties:
-        metadata-location:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/TableMetadata'
-        config:
-          type: object
-          additionalProperties:
-            type: string
-    Schema:
-      type: object
-      properties:
-        schema-id:
-          type: integer
-        fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/StructField'
     ReportMetricsRequest:
       type: object
       properties:
@@ -284,15 +202,6 @@ components:
           - commit-report
         metrics:
           type: object
-    SortOrder:
-      type: object
-      properties:
-        order-id:
-          type: integer
-        fields:
-          type: array
-          items:
-            type: object
     TableMetadata:
       type: object
       properties:
@@ -328,31 +237,46 @@ components:
           type: object
           additionalProperties:
             type: string
-    StructField:
+    CreateTableRequest:
       type: object
+      required:
+      - name
+      - schema
       properties:
-        id:
-          type: integer
         name:
           type: string
-        type:
+        location:
           type: string
-        required:
+        schema:
+          $ref: '#/components/schemas/Schema'
+        partition-spec:
+          $ref: '#/components/schemas/PartitionSpec'
+        write-order:
+          $ref: '#/components/schemas/SortOrder'
+        stage-create:
           type: boolean
-        doc:
-          type: string
-    IcebergErrorResponse:
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    PartitionSpec:
       type: object
       properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: integer
+        spec-id:
+          type: integer
+        fields:
+          type: array
+          items:
+            type: object
+    TableIdentifier:
+      type: object
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
     Snapshot:
       type: object
       properties:
@@ -380,19 +304,95 @@ components:
               - replace
               - overwrite
               - delete
+    CommitTableRequest:
+      type: object
+      required:
+      - requirements
+      - updates
+      properties:
+        identifier:
+          $ref: '#/components/schemas/TableIdentifier'
+        requirements:
+          type: array
+          items:
+            type: object
+        updates:
+          type: array
+          items:
+            type: object
+    CommitTableResponse:
+      type: object
+      properties:
+        metadata-location:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/TableMetadata'
+    LoadTableResult:
+      type: object
+      properties:
+        metadata-location:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/TableMetadata'
+        config:
+          type: object
+          additionalProperties:
+            type: string
+    SortOrder:
+      type: object
+      properties:
+        order-id:
+          type: integer
+        fields:
+          type: array
+          items:
+            type: object
+    Schema:
+      type: object
+      properties:
+        schema-id:
+          type: integer
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructField'
+    ListTablesResponse:
+      type: object
+      properties:
+        identifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/TableIdentifier'
+        next-page-token:
+          type: string
   responses:
-    Conflict:
-      description: Commit conflict or resource already exists
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/IcebergErrorResponse'
     NotFound:
       description: Resource not found
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/IcebergErrorResponse'
+    Conflict:
+      description: Commit conflict or resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IcebergErrorResponse'
+  parameters:
+    NamespaceParam:
+      name: namespace
+      in: path
+      required: true
+      description: Namespace identifier (can be multi-level with ASCII unit separator)
+      schema:
+        type: string
+    TableParam:
+      name: table
+      in: path
+      required: true
+      description: Table name
+      schema:
+        type: string
   securitySchemes:
     BearerAuth:
       type: http

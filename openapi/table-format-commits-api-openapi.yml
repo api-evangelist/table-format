@@ -44,6 +44,36 @@ paths:
           $ref: '#/components/responses/Conflict'
 components:
   schemas:
+    IcebergErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: integer
+    CommitTransactionRequest:
+      type: object
+      required:
+      - table-changes
+      properties:
+        table-changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommitTableRequest'
+    TableIdentifier:
+      type: object
+      properties:
+        namespace:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
     CommitTableRequest:
       type: object
       required:
@@ -60,36 +90,6 @@ components:
           type: array
           items:
             type: object
-    TableIdentifier:
-      type: object
-      properties:
-        namespace:
-          type: array
-          items:
-            type: string
-        name:
-          type: string
-    CommitTransactionRequest:
-      type: object
-      required:
-      - table-changes
-      properties:
-        table-changes:
-          type: array
-          items:
-            $ref: '#/components/schemas/CommitTableRequest'
-    IcebergErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: integer
   responses:
     Conflict:
       description: Commit conflict or resource already exists
